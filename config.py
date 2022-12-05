@@ -117,6 +117,7 @@ builders_others = [
     "oe-selftest-arm",
     "metrics",
     "qemuriscv32", "qemuriscv64", "qemuriscv64-ptest", "qemuppc64",
+    "qemux86-ptest", "qemux86-ptest-fast",
     "auh"
 ]
 
