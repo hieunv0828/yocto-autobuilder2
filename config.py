@@ -20,6 +20,7 @@ buildertorepos = {
     "meta-arm": ["poky", "meta-arm"],
     "meta-agl-core": ["poky", "meta-agl"],
     "meta-aws": ["poky", "meta-aws", "meta-openembedded"],
+    "meta-clang": ["poky", "meta-clang"],
     "qemuarm-oecore": ["oecore", "bitbake"],
     "checkuri": ["poky"],
     "check-layer": ["poky", "meta-mingw", "meta-gplv2"],
@@ -54,7 +55,8 @@ repos = {
     "meta-gplv2": ["ssh://git@push.yoctoproject.org/meta-gplv2", "master"],
     "meta-openembedded": ["git://git.openembedded.org/meta-openembedded", "master"],
     "meta-virtualization": ["ssh://git@push.yoctoproject.org/meta-virtualization", "master"],
-    "yocto-docs": ["ssh://git@push.yoctoproject.org/yocto-docs", "master"]
+    "yocto-docs": ["ssh://git@push.yoctoproject.org/yocto-docs", "master"],
+    "meta-clang": ["https://github.com/kraj/meta-clang.git", "master"],
 }
 
 trigger_builders_wait_shared = [
