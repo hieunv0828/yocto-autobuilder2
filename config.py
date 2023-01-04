@@ -112,7 +112,7 @@ trigger_builders_wait_perf = ["buildperf-ubuntu1604", "buildperf-centos7", "buil
 # Builders which are individually triggered
 builders_others = [
     "reproducible-ubuntu", "reproducible-debian", "reproducible-fedora", "reproducible-centos",
-    "meta-oe", "meta-virt",
+    "meta-oe", "meta-virt", "meta-clang",
     "bringup", "bringup-fast",
     "qemuarm-armhost",
     "check-layer-nightly",
