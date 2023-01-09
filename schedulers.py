@@ -80,7 +80,7 @@ branchdefaults = {
         'branch_meta-intel': 'kirkstone',
         'branch_meta-mingw': 'kirkstone',
         'branch_meta-openembedded': 'kirkstone',
-        'branch_meta-ti': 'master',
+        'branch_meta-ti': 'kirkstone',
         'branch_meta-virtualization': 'kirkstone',
         'branch_oecore': 'kirkstone',
     },
