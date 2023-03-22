@@ -183,8 +183,8 @@ class Console {
 
         this.sortBuildersByTags(this.all_builders);
 
-        this.changesBySSID = {};
-        this.changesByRevision = {};
+        if (this.changesBySSID == null) { this.changesBySSID = {}; }
+        if (this.changesByRevision == null) { this.changesByRevision = {}; }
         for (change of Array.from(this.changes)) {
             this.changesBySSID[change.sourcestamp.ssid] = change;
             this.changesByRevision[change.revision] = change;
