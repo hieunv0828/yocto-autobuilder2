@@ -106,6 +106,7 @@ class Console {
             order: '-started_at'
         }));
         this.changes = this.dataAccessor.getChanges({limit: this.changeLimit, order: '-changeid'});
+        this.$scope.fakechanges = (this.fakechanges = []);
         this.buildrequests = this.dataAccessor.getBuildrequests({limit: this.buildLimit, order: '-submitted_at'});
         this.buildsets = this.dataAccessor.getBuildsets({limit: this.buildLimit, order: '-submitted_at'});
 
@@ -189,7 +190,9 @@ class Console {
             this.changesByRevision[change.revision] = change;
             this.populateChange(change);
         }
-
+        for (change of Array.from(this.fakechanges)) {
+            this.populateChange(change);
+        }
 
         for (build of Array.from(this.builds)) {
             this.matchBuildWithChange(build);
@@ -405,6 +408,7 @@ class Console {
             }
             if ((change == null)) {
                 change = this.makeFakeChange(rev, build.started_at, rev);
+                this.fakechanges.push(change)
             }
 
             change.caption = "Commit";
@@ -438,6 +442,7 @@ class Console {
             if ((change == null)) {
                 change = this.makeFakeChange(rev, build.started_at, rev);
                 change.caption = rev;
+               this.fakechanges.push(change)
             }
         }
 
