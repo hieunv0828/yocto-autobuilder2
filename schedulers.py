@@ -40,6 +40,12 @@ branchdefaults = {
         'branch_meta-openembedded': 'master',
         'branch_oecore': 'master-next',
     },
+    'abelloni-next': {
+        'repo_poky': 'ssh://git@push.yoctoproject.org/poky-contrib',
+        'branch_poky': 'abelloni/master-next',
+        'repo_oecore': 'ssh://git@push.openembedded.org/openembedded-core-contrib',
+        'branch_oecore': 'abelloni/master-next',
+    },
     'mut': {
         'branch': 'master',
         'branch_poky': 'ross/mut',
@@ -371,7 +377,7 @@ def parent_scheduler(target):
             name="branchselector",
             default="master",
             label="Release Shortcut Selector",
-            choices=["master", "master-next", "mut", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
+            choices=["master", "master-next", "abelloni-next", "mut", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
             selectors=branchdefaults),
         util.BooleanParameter(
             name="swat_monitor",
