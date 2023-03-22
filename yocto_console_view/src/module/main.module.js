@@ -433,7 +433,9 @@ class Console {
             }
             if ((build.properties != null ? build.properties.publish_destination : undefined) != null) {
                 change.publishurl = build.properties.publish_destination[0].replace("/srv/autobuilder/autobuilder.yoctoproject.org/", "https://autobuilder.yocto.io/");
+                change.publishurl = change.publishurl.replace("/srv/autobuilder/autobuilder.yocto.io/", "https://autobuilder.yocto.io/");
             }
+
         } else {
             rev = `Unresolved Revision`;
             if ((change == null)) {
