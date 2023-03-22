@@ -392,14 +392,6 @@ class Console {
         if ((buildset == null)) {
             return;
         }
-        if  ((buildset != null) && (buildset.sourcestamps != null)) {
-            for (let sourcestamp of Array.from(buildset.sourcestamps)) {
-                change = this.changesBySSID[sourcestamp.ssid];
-                if (change != null) {
-                    break;
-                }
-            }
-        }
 
         if (((build.properties != null ? build.properties.yp_build_revision : undefined) != null) || this.revmapping[build.buildid]) {
             if ((build.properties != null ? build.properties.yp_build_revision : undefined) != null) {
