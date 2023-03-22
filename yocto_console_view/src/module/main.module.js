@@ -446,11 +446,10 @@ class Console {
                 change.caption = rev;
                this.fakechanges.push(change)
             }
+
         }
 
-        if (change.buildersById[build.builderid].builds.indexOf(build) == -1) {
-            change.buildersById[build.builderid].builds.push(build);
-        }
+        change.buildersById[build.builderid].builds.push(build);
     }
 
     makeFakeChange(revision, when_timestamp, comments) {
