@@ -201,3 +201,54 @@ builder_to_workers = {
     "auh" : workers_auh,
     "default": workers
 }
+
+builder_tags = {
+    "qemuarm":  ["qemu"],
+    "qemuarm64":  ["qemu"],
+    "qemumips": ["qemu"],
+    "qemumips64": ["qemu"],
+    "qemuppc": ["qemu"],
+    "qemuppc64": ["qemu"],
+    "qemux86": ["qemu"],
+    "qemux86-64": ["qemu"],
+    "qemux86-64-x32": ["qemu"],
+
+    "qemuarm-alt": ["qemu-alt"],
+    "qemuarm64-alt": ["qemu-alt"],
+    "qemumips-alt": ["qemu-alt"],
+    "qemuppc-alt": ["qemu-alt"],
+    "qemux86-alt": ["qemu-alt"],
+    "qemux86-64-alt": ["qemu-alt"],
+
+    "beaglebone": ["hw-ref"],
+    "edgerouter": ["hw-ref"],
+    "genericx86": ["hw-ref"],
+    "genericx86-64": ["hw-ref"],
+
+    "beaglebone-alt": ["hw-ref-alt"],
+    "edgerouter-alt": ["hw-ref-alt"],
+    "genericx86-alt": ["hw-ref-alt"],
+    "genericx86-64-alt": ["hw-ref-alt"],
+
+    "meta-intel": ["layers"],
+    "meta-arm": ["layers"],
+    "meta-aws": ["layers"],
+    "meta-agl-core": ["layers"],
+    "meta-virt": ["layers"],
+
+    "musl-qemux86": ["musl"],
+    "musl-qemux86-64": ["musl"],
+
+    "qemuarm64-ptest": ["ptest"],
+    "qemux86-64-ptest": ["ptest"],
+
+    "qemuarm64-ltp": ["ltp"],
+    "qemux86-64-ltp": ["ltp"],
+
+    "oe-selftest-armhost": ["selftest"],
+    "oe-selftest-ubuntu": ["selftest"],
+    "oe-selftest-debian": ["selftest"],
+    "oe-selftest-fedora": ["selftest"],
+    "oe-selftest-centos": ["selftest"],
+    "oe-selftest": ["selftest"],
+}

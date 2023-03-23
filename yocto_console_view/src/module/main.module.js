@@ -82,6 +82,7 @@ class Console {
         this._infoIsExpanded = {};
         this.$scope.all_builders = (this.all_builders = this.dataAccessor.getBuilders());
         this.$scope.builders = (this.builders = []);
+        this.$scope.buildergroups = (this.buildergroups = []);
         if (typeof Intl !== 'undefined' && Intl !== null) {
             const collator = new Intl.Collator(undefined, {numeric: true, sensitivity: 'base'});
             this.strcompare = collator.compare;
@@ -223,7 +224,7 @@ class Console {
 
     sortBuildersByTags(all_builders) {
         // first we only want builders with builds
-        let tag;
+        let builder, builders, tag;
         const builders_with_builds = [];
         let builderids_with_builds = "";
         for (let builder of Array.from(all_builders)) {
@@ -237,137 +238,61 @@ class Console {
             // don't recalculate if it hasn't changed!
             return;
         }
-        // we call recursive function, which finds non-overlapping groups
-        let tag_line = this._sortBuildersByTags(builders_with_builds);
-        // we get a tree of builders grouped by tags
-        // we now need to flatten the tree, in order to build several lines of tags
-        // (each line is representing a depth in the tag tree)
-        // we walk the tree left to right and build the list of builders in the tree order, and the tag_lines
-        // in the tree, there are groups of remaining builders, which could not be grouped together,
-        // those have the empty tag ''
-        const tag_lines = [];
 
-        let sorted_builders = [];
-        const set_tag_line = function(depth, tag, colspan) {
-            // we build the tag lines by using a sparse array
-            let _tag_line = tag_lines[depth];
-            if ((_tag_line == null)) {
-                // initialize the sparse array
-                _tag_line = (tag_lines[depth] = []);
-            } else {
-                // if we were already initialized, look at the last tag if this is the same
-                // we merge the two entries
-                const last_tag = _tag_line[_tag_line.length - 1];
-                if (last_tag.tag === tag) {
-                    last_tag.colspan += colspan;
-                    return;
-                }
-            }
-            return _tag_line.push({tag, colspan});
-        };
-        const self = this;
-        // recursive tree walking
-        var walk_tree = function(tag, depth) {
-            set_tag_line(depth, tag.tag, tag.builders.length);
-            if ((tag.tag_line == null) || (tag.tag_line.length === 0)) {
-                // this is the leaf of the tree, sort by buildername, and add them to the
-                // list of sorted builders
-                tag.builders.sort((a, b) => self.strcompare(a.name, b.name));
-                sorted_builders = sorted_builders.concat(tag.builders);
-                for (let i = 1; i <= 100; i++) {  // set the remaining depth of the tree to the same colspan
-                                   // (we hardcode the maximum depth for now :/ )
-                    set_tag_line(depth + i, '', tag.builders.length);
-                }
-                return;
-            }
-            return Array.from(tag.tag_line).map((_tag) =>
-                walk_tree(_tag, depth + 1));
-        };
-
-        for (tag of Array.from(tag_line)) {
-            walk_tree(tag, 0);
-        }
-
-        this.builders = sorted_builders;
-        this.tag_lines = [];
-        // make a new array to avoid it to be sparse, and to remove lines filled with null tags
-        for (tag_line of Array.from(tag_lines)) {
-            if (!((tag_line.length === 1) && (tag_line[0].tag === ""))) {
-                this.tag_lines.push(tag_line);
-            }
-        }
-        return this.last_builderids_with_builds = builderids_with_builds;
-    }
-    /*
-     * recursive function which sorts the builders by tags
-     * call recursively with groups of builders smaller and smaller
-     */
-    _sortBuildersByTags(all_builders) {
-
-        // first find out how many builders there is by tags in that group
-        let builder, builders, tag;
         const builders_by_tags = {};
-        for (builder of Array.from(all_builders)) {
-            if (builder.tags != null) {
+        for (builder of Array.from(builders_with_builds)) {
+            if (builder.tags != null && builder.tags.length) {
                 for (tag of Array.from(builder.tags)) {
                     if ((builders_by_tags[tag] == null)) {
                         builders_by_tags[tag] = [];
                     }
                     builders_by_tags[tag].push(builder);
                 }
+            } else {
+                if ((builders_by_tags[''] == null)) {
+                    builders_by_tags[''] = [];
+                }
+                builders_by_tags[''].push(builder);
             }
         }
-        const tags = [];
+
+        const self = this;
         for (tag in builders_by_tags) {
-            // we don't want the tags that are on all the builders
-            builders = builders_by_tags[tag];
-            if (builders.length < all_builders.length) {
-                tags.push({tag, builders});
+            builders_by_tags[tag].sort((a, b) => self.strcompare(a.name, b.name));
+        }
+        let buildergroups = [];
+        for (tag in builders_by_tags) {
+            if (tag != '') {
+                buildergroups.push({
+                    name: builders_by_tags[tag][0].name,
+                    tag: tag,
+                    builders: builders_by_tags[tag],
+                    colspan: builders_by_tags[tag].length
+                });
+            }
+        }
+        for (builder in builders_by_tags['']) {
+            buildergroups.push({
+                name: builders_by_tags[''][builder].name,
+                tag: '',
+                builders: [builders_by_tags[''][builder]],
+                colspan: 1
+            });
+        }
+
+        buildergroups.sort((a, b) => self.strcompare(a.name, b.name));
+
+        let sorted_builders = [];
+        for (let group in buildergroups) {
+            for (builder in buildergroups[group].builders) {
+                sorted_builders.push(buildergroups[group].builders[builder])
             }
         }
 
-        // sort the tags to first look at tags with the larger number of builders
-        // @FIXME maybe this is not the best method to find the best groups
-        tags.sort((a, b) => b.builders.length - a.builders.length);
-
-        const tag_line = [];
-        const chosen_builderids = {};
-        // pick the tags one by one, by making sure we make non-overalaping groups
-        for (tag of Array.from(tags)) {
-            let excluded = false;
-            for (builder of Array.from(tag.builders)) {
-                if (chosen_builderids.hasOwnProperty(builder.builderid)) {
-                    excluded = true;
-                    break;
-                }
-            }
-            if (!excluded) {
-                for (builder of Array.from(tag.builders)) {
-                    chosen_builderids[builder.builderid] = tag.tag;
-                }
-                tag_line.push(tag);
-            }
-        }
-
-        // some builders do not have tags, we put them in another group
-        const remaining_builders = [];
-        for (builder of Array.from(all_builders)) {
-            if (!chosen_builderids.hasOwnProperty(builder.builderid)) {
-                remaining_builders.push(builder);
-            }
-        }
-
-        if (remaining_builders.length) {
-            tag_line.push({tag: "", builders: remaining_builders});
-        }
-
-        // if there is more than one tag in this line, we need to recurse
-        if (tag_line.length > 1) {
-            for (tag of Array.from(tag_line)) {
-                tag.tag_line = this._sortBuildersByTags(tag.builders);
-            }
-        }
-        return tag_line;
+        this.builders = sorted_builders;
+        this.buildergroups = buildergroups;
+        this.tag_lines = [];
+        return this.last_builderids_with_builds = builderids_with_builds;
     }
 
     /*
@@ -376,10 +301,13 @@ class Console {
     populateChange(change) {
         change.builders = [];
         change.buildersById = {};
-        for (let builder of Array.from(this.builders)) {
-            builder = {builderid: builder.builderid, name: builder.name, builds: []};
-            change.builders.push(builder);
-            change.buildersById[builder.builderid] = builder;
+        for (let buildergroup of Array.from(this.buildergroups)) {
+            let builderg = {name: buildergroup.name, builds: [], builders: [], colspan: buildergroup.builders.length};
+            for (let builder of Array.from(buildergroup.builders)) {
+                builderg.builders.push(builder);
+                change.buildersById[builder.builderid] = builderg;
+            }
+            change.builders.push(builderg);
         }
     }
     /*

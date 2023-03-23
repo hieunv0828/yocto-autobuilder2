@@ -172,9 +172,10 @@ for builder in config.subbuilders:
     workers = config.builder_to_workers.get(builder, None)
     if not workers:
         workers = config.builder_to_workers['default']
+    tags = config.builder_tags.get(builder, None)
     builders.append(util.BuilderConfig(name=builder,
                                        workernames=workers, canStartBuild=canStartBuild, nextWorker=nextWorker, nextBuild=nextBuild,
-                                       factory=f, env=extra_env))
+                                       factory=f, env=extra_env, tags=tags))
 
 # Prioritize assigning builders to available workers based on the length
 # of the worker lists they are associated with. Builders that have fewer

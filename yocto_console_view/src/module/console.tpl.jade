@@ -17,15 +17,15 @@
                 span.builder(ng-style="{'margin-top': c.getColHeaderHeight()}")
                     a(ng-href='#/builders/{{ builder.builderid }}'
                       ng-bind='builder.name')
-        tr.tag_row(ng-repeat="tag_line in c.tag_lines")
+        tr.tag_row
             td.row-header
-            td(ng-repeat="tag in tag_line" colspan="{{tag.colspan}}")
-                span(uib-tooltip='{{ tag.tag }}' ng-style='{width: tag.colspan*50}') {{tag.tag}}
+            td(ng-repeat="buildergroup in c.buildergroups" colspan="{{buildergroup.colspan}}" ng-style="{'text-align': 'center'}")
+                | {{buildergroup.tag}}
         tr(ng-repeat="change in c.filtered_changes | orderBy: ['-when_timestamp'] track by change.changeid")
             td
                 yoctochangedetails(change="change")
             td.column(ng-repeat="builder in change.builders"
-                      title="{{builder.name}}")
+                      title="{{builder.name}}" colspan="{{builder.colspan}}")
                 span(ng-repeat="build in builder.builds | orderBy: ['number']")
                     script(type="text/ng-template" id="buildsummarytooltip")
                         buildsummary(buildid="build.buildid" type="tooltip")
