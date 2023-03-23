@@ -43,7 +43,7 @@ branchdefaults = {
     'abelloni-next': {
         'repo_poky': 'ssh://git@push.yoctoproject.org/poky-contrib',
         'branch_poky': 'abelloni/master-next',
-        'repo_oecore': 'ssh://git@push.openembedded.org/openembedded-core-contrib',
+        'repo_oecore': 'git://git.openembedded.org/openembedded-core-contrib',
         'branch_oecore': 'abelloni/master-next',
     },
     'mut': {
