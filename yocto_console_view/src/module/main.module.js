@@ -424,10 +424,6 @@ class Console {
             if ((buildset != null) && (buildset.parent_buildid != null)) {
                 bid = buildset.parent_buildid;
             }
-            if (((change.bid != null) && (bid > change.bid)) || (change.bid == null)) {
-                change.bid = bid;
-                change.loglink = "https://wiki.yoctoproject.org/wiki/BuildLog#" + bid;
-            }
             if ((build.properties != null ? build.properties.reason : undefined) != null) {
                 change.reason = build.properties.reason[0];
             }
