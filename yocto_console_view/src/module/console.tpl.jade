@@ -24,8 +24,7 @@
         tr(ng-repeat="change in c.filtered_changes | orderBy: ['-when_timestamp'] track by change.changeid")
             td
                 yoctochangedetails(change="change")
-            td.column(ng-repeat="builder in change.builders"
-                      title="{{builder.name}}" colspan="{{builder.colspan}}")
+            td.column(ng-repeat="builder in change.builders" colspan="{{builder.colspan}}")
                 span(ng-repeat="build in builder.builds | orderBy: ['number']")
                     script(type="text/ng-template" id="buildsummarytooltip")
                         buildsummary(buildid="build.buildid" type="tooltip")
