@@ -54,6 +54,11 @@
   text-decoration: none;
   white-space: nowrap;
 }
+.console tr.first-row .column {
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+}
 .yoctochangedetails > .no-select > * {
   margin-left: 0.3em;
   margin-right: 0.3em;
