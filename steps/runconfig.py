@@ -220,7 +220,7 @@ class TargetPresent(shell.ShellCommand):
 
     def evaluateCommand(self, cmd):
         # If the command fails, fall back to old style run-config execution
-        rc = super().evaluateCommand(cmd)
+        rc = cmd.results()
         if rc != SUCCESS:
             self.descriptionDone = "Target not present in branch configuration"
             self.build.results = SKIPPED
@@ -228,3 +228,9 @@ class TargetPresent(shell.ShellCommand):
             self.build.terminate = True
             return SKIPPED
         return SUCCESS
+
+    @defer.inlineCallbacks
+    def run(self):
+        cmd = yield self.makeRemoteShellCommand()
+        yield self.runCommand(cmd)
+        return self.evaluateCommand(cmd)
