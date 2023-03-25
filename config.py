@@ -240,7 +240,9 @@ builder_tags = {
     "musl-qemux86-64": ["musl"],
 
     "qemuarm64-ptest": ["ptest"],
+    "qemuarm64-ptest-fast": ["ptest"],
     "qemux86-64-ptest": ["ptest"],
+    "qemux86-64-ptest-fast": ["ptest"],
 
     "qemuarm64-ltp": ["ltp"],
     "qemux86-64-ltp": ["ltp"],
