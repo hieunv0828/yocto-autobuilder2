@@ -115,11 +115,13 @@ def create_builder_factory():
 
     f.addStep(steps.SetPropertyFromCommand(command=util.Interpolate("cd %(prop:builddir)s/build; git rev-parse HEAD"),
                                            property="yp_build_revision",
+                                           doStepIf=util.Property("yp_build_revision", default='') == '',
                                            haltOnFailure=True,
                                            name='Set build revision'))
 
     f.addStep(steps.SetPropertyFromCommand(command=util.Interpolate("cd %(prop:builddir)s/build; git rev-parse --abbrev-ref HEAD"),
                                            property="yp_build_branch",
+                                           doStepIf=util.Property("yp_build_branch", default='') == '',
                                            haltOnFailure=True,
                                            name='Set build branch'))
 
@@ -277,11 +279,13 @@ def create_parent_builder_factory(buildername, waitname):
 
     factory.addStep(steps.SetPropertyFromCommand(command=util.Interpolate("cd %(prop:builddir)s/build; git rev-parse HEAD"),
                                                  property="yp_build_revision",
+                                                 doStepIf=util.Property("yp_build_revision", default='') == '',
                                                  haltOnFailure=True,
                                                  name='Set build revision'))
 
     factory.addStep(steps.SetPropertyFromCommand(command=util.Interpolate("cd %(prop:builddir)s/build; git rev-parse --abbrev-ref HEAD"),
                                                  property="yp_build_branch",
+                                                 doStepIf=util.Property("yp_build_branch", default='') == '',
                                                  haltOnFailure=True,
                                                  name='Set build branch'))
 
