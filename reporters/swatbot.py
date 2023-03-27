@@ -234,7 +234,7 @@ class SwatBotURI(object):
 class SwatBot(service.BuildbotService):
     name = "SwatBot"
 
-    neededDetails = dict(wantProperties=True, wantSteps=True)
+    neededDetails = dict(want_properties=True, want_steps=True)
     # wantPreviousBuilds wantLogs
 
     def checkConfig(self, bot_uri, user, password, **kwargs):
