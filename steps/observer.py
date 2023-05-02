@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-only
 #
 
+from twisted.internet import defer
 from twisted.python import log
 
 from buildbot.process import logobserver
@@ -21,8 +22,8 @@ class SimpleLogObserver(ShellCommand):
 
     warnOnWarnings = True
     warnOnFailure = True
-    warnings = 0
-    errors = 0
+    warnCount = 0
+    errorCount = 0
 
     def __init__(self, maxsteps=10, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -41,22 +42,44 @@ class SimpleLogObserver(ShellCommand):
         while True:
             stream, line = yield
             if line.startswith("WARNING:"):
-                self.warnings += 1
+                self.warnCount += 1
                 self.warningLines.append(logname + ": " + line)
             if line.startswith("ERROR:"):
-                self.errors += 1
+                self.errorCount += 1
                 self.errorLines.append(logname + ": " + line)
 
-    def commandComplete(self, cmd):
-        if self.warningLines:
-            self.addCompleteLog('warnings', '\n'.join(self.warningLines))
+    @defer.inlineCallbacks
+    def finish_logs(self):
+        stdio_log = yield self.getLog('stdio')
+        yield stdio_log.finish()
+
+    @defer.inlineCallbacks
+    def createSummary(self):
+        if self.warnCount:
+            yield self.addCompleteLog('warnings', '\n'.join(self.warningLines) + '\n')
         if self.errorLines:
-            self.addCompleteLog('errors', '\n'.join(self.errorLines))
+            yield self.addCompleteLog('errors', '\n'.join(self.errorLines) + '\n')
+
+        warnings_stat = self.getStatistic('warnings', 0)
+        self.setStatistic('warnings', warnings_stat + self.warnCount)
+
+        old_count = self.getProperty("warnings-count", 0)
+        self.setProperty(
+            "warnings-count", old_count + self.warnCount, "SimpleLogObserver")
+
+    @defer.inlineCallbacks
+    def run(self):
+        cmd = yield self.makeRemoteShellCommand()
+        yield self.runCommand(cmd)
+
+        yield self.finish_logs()
+        yield self.createSummary()
+        return self.evaluateCommand(cmd)
 
     def evaluateCommand(self, cmd):
-        if cmd.didFail() or self.errors:
+        if cmd.didFail() or self.errorCount:
             return FAILURE
-        if self.warnings:
+        if self.warnCount:
             return WARNINGS
         return SUCCESS
 
