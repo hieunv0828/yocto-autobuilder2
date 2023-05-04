@@ -34,8 +34,8 @@ well as a couple of repositories: Autobuilder2 itself and a helper plugin.  As
 root:
 
 ```
-useradd -m --system pokybuild3
-cd /home/pokybuild3
+useradd -m --system pokybuild
+cd /home/pokybuild
 buildbot create-master -r yocto-controller
 buildbot-worker create-worker -r --umask=0o22 yocto-worker localhost example-worker pass
 cd yocto-controller
@@ -43,18 +43,18 @@ git clone https://git.yoctoproject.org/git/yocto-autobuilder2 yoctoabb
 ln -rs yoctoabb/master.cfg master.cfg
 cd -
 git clone https://git.yoctoproject.org/git/yocto-autobuilder-helper
-chown -R pokybuild3:nogroup /home/pokybuild3
+chown -R pokybuild:nogroup /home/pokybuild
 ```
 
 Note: depending on the configuration of your system, you may need to
-replace "nogroup" with "pokybuild3" for the last command to work.
+replace "nogroup" with "pokybuild" for the last command to work.
 
  > **IMPORTANT:** In the above command you created a controller and a worker,
  > which will attempt to join the controller using `pass` as the password.  Feel
  > free to change this, knowing that if you do, you must change the controller's
  > master configuration file to match.
 
-At the end of this, your build user's home directory (e.g., `/home/pokybuild3`)
+At the end of this, your build user's home directory (e.g., `/home/pokybuild`)
 should look like this:
 
 ```
@@ -65,7 +65,7 @@ yocto-worker
 ```
 
 Before proceeding, make sure that the following is added to the
-pokybuild3 user's exports (e.g. in .bashrc), or builds will fail after
+pokybuild user's exports (e.g. in .bashrc), or builds will fail after
 being triggered:
 
 ```
@@ -99,8 +99,8 @@ really more about extenending the original set of builders.
 Here are some suggestions for the sake of :
 
  1. In the original `config.json`, find all instances of whatever
-    `BASE_HOMEDIR` was set to, for example `/home/pokybuild3`.  Copy those
-    variables to your `config-local.json` replace `/home/pokybuild3`
+    `BASE_HOMEDIR` was set to, for example `/home/pokybuild`.  Copy those
+    variables to your `config-local.json` replace `/home/pokybuild`
     with `${BASE_HOMEDIR}`.  These will be variables
     like `BUILDPERF_STATEDIR` and `EXTRAPLAINCMDS`.  Set `BASE_HOMEDIR` should
     be your build user's home directory.  (There are shell scripts where this is
@@ -129,7 +129,7 @@ systemd service files.
 
 #### 1.4.1) Manually Starting the Autobuilder
 
-Run the following from the pokybuild3 directory:
+Run the following from the pokybuild directory:
 
  1. yocto-autobuilder-helper/janitor/ab-janitor&
  2. buildbot start yocto-controller
@@ -183,16 +183,16 @@ The QEMU tap interfaces also need to be generated and owned by the worker's use
 `meta/recipes-devtools/qemu/qemu-helper/tunctl.c` file and run it _N_ times on
 the worker's host.  See the related `qemu-helper-native` recipe for
 instructions.  The resulting executable would be run _N_ times (e.g., 8), so for
-example: `sudo tunctl -u $(id -u pokybuild3) -g $(id -g pokybuild3) -t tun0`.
+example: `sudo tunctl -u $(id -u pokybuild) -g $(id -g pokybuild) -t tun0`.
 
 Another way to create these interface is to let the build fail once, then issue
 a command like this from a user with sudo permissions on the worker:
 
 ```
-sudo /home/pokybuild3/yocto-worker/qemuarm/build/scripts/runqemu-gen-tapdevs \
-    $(id -u pokybuild3) $(id -g pokybuild3) \
+sudo /home/pokybuild/yocto-worker/qemuarm/build/scripts/runqemu-gen-tapdevs \
+    $(id -u pokybuild) $(id -g pokybuild) \
     8 \
-    /home/pokybuild3/yocto-worker/qemuarm/build/build/tmp/sysroots-components/x86_64/qemu-helper-native/usr/bin
+    /home/pokybuild/yocto-worker/qemuarm/build/build/tmp/sysroots-components/x86_64/qemu-helper-native/usr/bin
 ```
 
 In the above command, we assume the a build named qemuarm failed.  The value of
@@ -216,11 +216,11 @@ make sure that it is added to the "workers" list.
 2. On the new worker node:
 
 ```
-useradd -m --system pokybuild3
-cd /home/pokybuild3
+useradd -m --system pokybuild
+cd /home/pokybuild
 mkdir -p git/trash
 buildbot-worker create-worker -r --umask=0o22 yocto-worker 147.11.105.72 ala-blade51 pass
-chown -R pokybuild3:pokybuild3 /home/pokybuild3
+chown -R pokybuild:pokybuild /home/pokybuild
 ```
 
  > Note 1: The URL/IP given to the create-worker command must match the
@@ -246,7 +246,7 @@ The Yocto Autobuilder relies on NFS to distribute a common sstate cache
 and other outputs between nodes. A similar configuration can be
 deployed by performing the steps given below, which were written for
 Ubuntu 18.04.In order for both the controller and worker nodes to be able
-to access the NFS share without issue, the "pokybuild3" user on all
+to access the NFS share without issue, the "pokybuild" user on all
 systems must have the same UID/GID, or sufficient permissions must be
 granted on the /srv/autobuilder path (or wherever you modified the config
 files to point to). The following instructions assume a controller node
@@ -259,7 +259,7 @@ section).
 ```
 sudo apt install -y nfs-kernel-server
 sudo mkdir -p /srv/autobuilder/autobuilder.yoctoproject.org/
-sudo chown -R pokybuild3:pokybuild3 /srv/autobuilder/autobuilder.yoctoproject.org
+sudo chown -R pokybuild:pokybuild /srv/autobuilder/autobuilder.yoctoproject.org
 ```
 2. Add the following to /etc/exports, replacing the path and IP fields
    as necessary for each client node:
@@ -387,9 +387,9 @@ it: `buildbot upgrade-master`.  Then restart the controller.
 As mentioned before, BuildBot is the underlying tool that Autobuilder2 uses. 
 It's a python3-based framework that consists of a master and multiple workers
 that may be remotely connected.  Per this guide, both are installed on the same
-host under `/home/pokybuild3`.
+host under `/home/pokybuild`.
 
-The configuration for the controller is in `/home/pokybuild3/yocto-controller`. 
+The configuration for the controller is in `/home/pokybuild/yocto-controller`. 
 This directory also contains the Yocto Project's Autobuilder source code
 (in `yoctoabb`) and master configuration file, `master.cfg`.  The `master.cfg`
 is a python file that pulls in other configuration data from the Autobuilder
@@ -608,10 +608,10 @@ Documentation=man:buildbot(1) https://docs.buildbot.net/
 Wants=yocto-janitor.service
 
 [Service]
-PIDFile=/home/pokybuild3/yocto-controller/twistd.pid
+PIDFile=/home/pokybuild/yocto-controller/twistd.pid
 Type=forking
-WorkingDirectory=/home/pokybuild3/yocto-controller
-User=pokybuild3
+WorkingDirectory=/home/pokybuild/yocto-controller
+User=pokybuild
 Group=nogroup
 TimeoutStartSec=15
 Environment=ABHELPER_JSON="config.json config-local.json"
@@ -634,13 +634,13 @@ Wants=yocto-controller.service
 
 [Service]
 Type=forking
-PIDFile=/home/pokybuild3/yocto-worker/twistd.pid
-WorkingDirectory=/home/pokybuild3
+PIDFile=/home/pokybuild/yocto-worker/twistd.pid
+WorkingDirectory=/home/pokybuild
 ExecStart=/usr/bin/env buildbot-worker start yocto-worker
 ExecReload=/usr/bin/env buildbot-worker restart yocto-worker
 ExecStop=/usr/bin/env buildbot-worker stop yocto-worker
 Restart=always
-User=pokybuild3
+User=pokybuild
 Group=nogroup
 
 [Install]
@@ -657,11 +657,11 @@ After=network.target
 
 [Service]
 Type=simple
-PIDFile=/home/pokybuild3/yocto-autobuilder-helper/janitor.pid
-WorkingDirectory=/home/pokybuild3/yocto-autobuilder-helper
+PIDFile=/home/pokybuild/yocto-autobuilder-helper/janitor.pid
+WorkingDirectory=/home/pokybuild/yocto-autobuilder-helper
 Environment=ABHELPER_JSON="config.json config-local.json"
-ExecStart=/home/pokybuild3/yocto-autobuilder-helper/janitor/ab-janitor
-User=pokybuild3
+ExecStart=/home/pokybuild/yocto-autobuilder-helper/janitor/ab-janitor
+User=pokybuild
 Group=nogroup
 
 [Install]

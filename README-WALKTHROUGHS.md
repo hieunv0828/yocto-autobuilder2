@@ -2,8 +2,8 @@
 # Installing buildbot without ability to edit UI
 ######################################################################
 
-sudo adduser pokybuild3
-sudo -iu pokybuild3
+sudo adduser pokybuild
+sudo -iu pokybuild
 pip3 install buildbot
 PATH=$PATH:/.local/bin
 
@@ -18,8 +18,8 @@ PATH=$PATH:/.local/bin
 apt install sudo git build-essential python3-pip virtualenv enchant npm
 
 # Create a new user
-sudo adduser pokybuild3
-sudo -iu pokybuild3
+sudo adduser pokybuild
+sudo -iu pokybuild
 
 # Clone the buildbot UI
 git clone http://github.com/buildbot/buildbot.git
@@ -44,8 +44,8 @@ python3 setup.py build
 ######################################################################
 
 # Create a new user
-sudo adduser pokybuild3
-sudo -iu pokybuild3
+sudo adduser pokybuild
+sudo -iu pokybuild
 
 # Clone the buildbot UI
 git clone http://github.com/buildbot/buildbot.git
@@ -73,10 +73,10 @@ ln -rs yoctoabb/master.cfg master.cfg
 <edit master.cfg services.py www.py config.py>
 <add ~/config-local.json with contents:>
 {
-    "BASE_HOMEDIR" : "/home/pokybuild3",
-    "BASE_SHAREDDIR" : "/home/pokybuild3/shareddir"
+    "BASE_HOMEDIR" : "/home/pokybuild",
+    "BASE_SHAREDDIR" : "/home/pokybuild/shareddir"
 }
-export ABHELPER_JSON="config.json /home/pokybuild3/config-local.json"
+export ABHELPER_JSON="config.json /home/pokybuild/config-local.json"
 (or set env in config.py for builders)
 
 # Rebuild our plugin
