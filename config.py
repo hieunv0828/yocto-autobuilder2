@@ -60,13 +60,16 @@ repos = {
 }
 
 trigger_builders_wait_shared = [
-    "qemuarm", "qemuarm-alt", "qemuarm64", "qemuarm64-alt", "qemuarm-oecore",
-    "qemumips", "qemumips64",
-    "multilib",
-    "qemuppc",
-    "qemux86", "qemux86-alt",
-    "qemux86-64", "qemux86-64-alt",
+    "qemuarm", "qemuarm-alt", "qemuarm-tc",
+    "qemuarm64", "qemuarm64-alt", "qemuarm64-tc",
+    "qemumips", "qemumips-tc",
+    "qemumips64", "qemumips64-tc"
+    "qemuppc", "qemuppc-tc"
+    "qemux86", "qemux86-alt", "qemux86-tc",
+    "qemux86-64", "qemux86-64-alt", "qemux86-64-tc",
+    "qemuarm-oecore",
     "qemux86-64-x32", "qemux86-world",
+    "multilib",
     "edgerouter",
     "genericx86", "genericx86-alt",
     "genericx86-64", "genericx86-64-alt",
@@ -90,7 +93,7 @@ trigger_builders_wait_quick = trigger_builders_wait_shared + [
 trigger_builders_wait_full = trigger_builders_wait_shared + [
     "qemumips-alt", "edgerouter-alt", "qemuppc-alt", "qemux86-world-alt",
     "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-fedora", "oe-selftest-centos",
-    "qemux86-64-ptest", "qemux86-64-ltp", "qemuarm64-ptest", "qemuarm64-ltp", 
+    "qemux86-64-ptest", "qemux86-64-ltp", "qemuarm64-ptest", "qemuarm64-ltp",
     "meta-intel", "meta-arm", "meta-aws", "meta-agl-core", "meta-virt"
 ]
 
@@ -117,7 +120,9 @@ builders_others = [
     "qemuarm-armhost",
     "check-layer-nightly",
     "metrics",
-    "qemuriscv32", "qemuriscv64", "qemuriscv64-ptest", "qemuppc64",
+    "qemuriscv32", "qemuriscv32-tc",
+    "qemuriscv64", "qemuriscv64-ptest", "qemuriscv64-tc",
+    "qemuppc64", "qemuppc64-tc",
     "qemux86-ptest", "qemux86-ptest-fast",
     "auh"
 ]
@@ -140,7 +145,7 @@ workers_fedora = ["fedora34-ty-1", "fedora35-ty-1", "fedora35-ty-2"]
 workers_debian = ["debian9-ty-2", "debian10-ty-1", "debian11-ty-1", "debian11-ty-2", "debian11-ty-3"]
 workers_opensuse = ["tumbleweed-ty-3", "opensuse153-ty-1", "opensuse154-ty-1"]
 
-workers = workers_ubuntu + workers_centos + workers_fedora + workers_debian + workers_opensuse 
+workers = workers_ubuntu + workers_centos + workers_fedora + workers_debian + workers_opensuse
 
 workers_bringup = []
 # workers with wine on them for meta-mingw
@@ -212,6 +217,9 @@ builder_tags = {
     "qemux86": ["qemu"],
     "qemux86-64": ["qemu"],
     "qemux86-64-x32": ["qemu"],
+    "qemuriscv32": ["qemu"],
+    "qemuriscv64": ["qemu"],
+    "qemuppc64": ["qemu"],
 
     "qemuarm-alt": ["qemu-alt"],
     "qemuarm64-alt": ["qemu-alt"],
@@ -219,6 +227,18 @@ builder_tags = {
     "qemuppc-alt": ["qemu-alt"],
     "qemux86-alt": ["qemu-alt"],
     "qemux86-64-alt": ["qemu-alt"],
+
+    "qemuarm-tc":  ["toolchain"],
+    "qemuarm64-tc":  ["toolchain"],
+    "qemumips-tc": ["toolchain"],
+    "qemumips64-tc": ["toolchain"],
+    "qemuppc-tc": ["toolchain"],
+    "qemuppc64-tc": ["toolchain"],
+    "qemux86-tc": ["toolchain"],
+    "qemux86-64-tc": ["toolchain"],
+    "qemuriscv32-tc": ["toolchain"],
+    "qemuriscv64-tc": ["toolchain"],
+    "qemuppc64-tc": ["toolchain"],
 
     "beaglebone": ["hw-ref"],
     "edgerouter": ["hw-ref"],
@@ -243,6 +263,9 @@ builder_tags = {
     "qemuarm64-ptest-fast": ["ptest"],
     "qemux86-64-ptest": ["ptest"],
     "qemux86-64-ptest-fast": ["ptest"],
+    "qemux86-ptest": ["ptest"],
+    "qemux86-ptest-fast": ["ptest"],
+    "qemuriscv64-ptest": ["ptest"],
 
     "qemuarm64-ltp": ["ltp"],
     "qemux86-64-ltp": ["ltp"],
