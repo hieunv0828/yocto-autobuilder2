@@ -75,7 +75,6 @@ trigger_builders_wait_shared = [
     "genericx86-64", "genericx86-64-alt",
     "beaglebone", "beaglebone-alt",
     "pkgman-non-rpm",
-    "pkgman-rpm-non-rpm", "pkgman-deb-non-deb",
     "build-appliance", "buildtools",
     "non-gpl3", "wic",
     "poky-tiny", "musl-qemux86", "musl-qemux86-64", "no-x11",
@@ -181,8 +180,6 @@ notify_on_missing = None
 builder_to_workers = {
     "bringup": workers_bringup + workers,
     "bringup-fast": workers_bringup + workers,
-    "pkgman-rpm-non-rpm": workers_ubuntu + workers_debian,
-    "pkgman-deb-non-deb": workers_fedora + workers_centos + workers_opensuse,
     "oe-selftest-ubuntu": workers_ubuntu,
     "oe-selftest-debian": workers_debian,
     "oe-selftest-fedora": workers_fedora,
