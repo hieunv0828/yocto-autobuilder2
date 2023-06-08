@@ -63,8 +63,8 @@ trigger_builders_wait_shared = [
     "qemuarm", "qemuarm-alt", "qemuarm-tc",
     "qemuarm64", "qemuarm64-alt", "qemuarm64-tc",
     "qemumips", "qemumips-tc",
-    "qemumips64", "qemumips64-tc"
-    "qemuppc", "qemuppc-tc"
+    "qemumips64", "qemumips64-tc",
+    "qemuppc", "qemuppc-tc",
     "qemux86", "qemux86-alt", "qemux86-tc",
     "qemux86-64", "qemux86-64-alt", "qemux86-64-tc",
     "qemuarm-oecore",
