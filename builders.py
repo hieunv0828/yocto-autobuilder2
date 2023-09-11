@@ -128,11 +128,12 @@ def create_builder_factory():
 
     f.addStep(RunConfigCheckSteps(posttrigger=False))
 
-    # If the build was successful, clean up the build directory
+    # If the build was successful or cancelled, clean up the build directory
     f.addStep(steps.ShellCommand(
         command=[clob, util.Interpolate("%(prop:builddir)s/")],
-        doStepIf=lambda step: step.build.results == SUCCESS,
+        doStepIf=lambda step: step.build.results in (SUCCESS, CANCELLED),
         haltOnFailure=False,
+        alwaysRun=True,
         name="Clobber build dir"))
 
     return f
