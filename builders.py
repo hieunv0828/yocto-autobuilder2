@@ -332,6 +332,7 @@ def create_parent_builder_factory(buildername, waitname):
             util.Property("send_email"),
             util.Interpolate("%(prop:builddir)s/layerinfo.json"),
             util.Interpolate("%(prop:sharedrepolocation)s"),
+            "--url", util.Interpolate('%(kw:url)s', url=util.URLForBuild),
             "-p", get_publish_dest,
             "-r", get_publish_name,
             "-R", get_publish_resultdir
