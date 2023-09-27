@@ -69,7 +69,7 @@ branchdefaults = {
         'branch_meta-aws': 'mickledore',
         'branch_meta-gplv2': 'master',
         'branch_meta-intel': 'mickledore',
-        'branch_meta-mingw': 'master',
+        'branch_meta-mingw': 'mickledore',
         'branch_meta-openembedded': 'mickledore',
         'branch_meta-ti': 'master',
         'branch_meta-virtualization': 'mickledore',
