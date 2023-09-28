@@ -109,7 +109,7 @@ trigger_builders_wait_full_releases = {
                                              "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-centos"]
 }
 
-trigger_builders_wait_perf = ["buildperf-ubuntu1604", "buildperf-centos7", "buildperf-debian11"]
+trigger_builders_wait_perf = ["buildperf-debian11", "buildperf-alma8"]
 
 # Builders which are individually triggered
 builders_others = [
@@ -123,6 +123,8 @@ builders_others = [
     "qemuriscv64", "qemuriscv64-ptest", "qemuriscv64-tc",
     "qemuppc64", "qemuppc64-tc",
     "qemux86-ptest", "qemux86-ptest-fast",
+    "buildperf-debian11",
+    "buildperf-alma8",
     "auh"
 ]
 
@@ -149,8 +151,8 @@ workers = workers_ubuntu + workers_centos + workers_fedora + workers_debian + wo
 workers_bringup = []
 # workers with wine on them for meta-mingw
 workers_wine = ["ubuntu1804-ty-3"]
-workers_buildperf = ["perf-ubuntu1604", "perf-centos7", "perf-debian11"]
 workers_arm = ["ubuntu1804-arm-1", "ubuntu2004-arm-1", "ubuntu2204-arm-1"]
+workers_buildperf = ["perf-debian11", "perf-alma8"]
 # workers which don't need buildtools for AUH and are able to send email to mailing lists
 workers_auh = ["alma8-ty-1", "alma8-ty-2"]
 
@@ -192,9 +194,8 @@ builder_to_workers = {
     "reproducible-opensuse": workers_opensuse,
     "reproducible-centos": workers_centos,
     "meta-mingw": workers_wine,
-    "buildperf-ubuntu1604": ["perf-ubuntu1604"],
     "buildperf-debian11": ["perf-debian11"],
-    "buildperf-centos7": ["perf-centos7"],
+    "buildperf-alma8": ["perf-alma8"],
     "qemuarm-armhost": workers_arm,
     "qemuarm64-ptest": workers_arm,
     "qemuarm64-ptest-fast": workers_arm,

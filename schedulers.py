@@ -471,10 +471,8 @@ schedulers.append(sched.Nightly(name='nightly-check-layer-dunfell', properties=p
                   builderNames=['check-layer-nightly'], dayOfWeek=[1, 4], hour=2, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
 
 # Run the build performance tests at 3am, 9am, 3pm and 9pm
-schedulers.append(sched.Nightly(name='nightly-buildperf-ubuntu1604', branch='master', properties=parent_default_props('buildperf-ubuntu1604'),
-                  builderNames=['buildperf-ubuntu1604', 'buildperf-debian11'], hour=[3,9,15,21], minute=0))
-schedulers.append(sched.Nightly(name='nightly-buildperf-centos7', branch='master', properties=parent_default_props('buildperf-centos7'),
-                  builderNames=['buildperf-centos7'], hour=[3,9,15,21], minute=0))
+schedulers.append(sched.Nightly(name='nightly-buildperf', branch='master', properties=parent_default_props('buildperf-debian11'),
+                  builderNames=['buildperf-debian11', 'buildperf-alma8'], hour=[3,9,15,21], minute=0))
 
 # Run the AUH twice a month on 1st and 15th
 schedulers.append(sched.Nightly(name='nightly-auh', branch='master', properties=parent_default_props('auh'),
