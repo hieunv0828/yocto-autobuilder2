@@ -3,20 +3,27 @@
 #
 
 from buildbot.plugins import reporters
-
 from yoctoabb import config
-
+import os
 
 services = []
 
-# TODO: we'll replace this with functionality in yocto-autobuilder-helpers
-# to mail the error reports to the list
-# services.append(
-#     reporters.MailNotifier(fromaddr="yocto-builds@yoctoproject.org",
-#                            sendToInterestedUsers=False,
-#                            extraRecipients=["yocto-builds@yoctoproject.org"],
-#                            mode=('failing',))
-# )
+with open(os.path.join(os.path.dirname(__file__), "default_mail.txt"), "r") as f:
+    emailtext = "\n".join(f.readlines())
+
+formatter = reporters.MessageFormatter(template=emailtext)
+
+generator = reporters.BuildStatusGenerator(
+    mode=('failing', 'warnings', 'exception', 'cancelled'),
+    message_formatter=formatter,
+    builders=['a-full', 'a-quick', 'buildperf-alma8', 'buildperf-debian11', 'docs'])
+
+#services.append(
+#     reporters.MailNotifier(fromaddr="controller@yoctoproject.org",
+#                            extraRecipients=["yocto-builds@lists.yoctoproject.org"],
+#                            generators=[generator])
+#)
+
 
 # services.append(
 #     reporters.IRC(host="irc.freenode.net",
