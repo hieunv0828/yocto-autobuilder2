@@ -328,7 +328,7 @@ def create_parent_builder_factory(buildername, waitname):
 
     factory.addStep(steps.ShellCommand(
         command=[
-            util.Interpolate("%(prop:builddir)s/yocto-autobuilder-helper/scripts/send-qa-email"),
+            util.Interpolate("%(prop:builddir)s/yocto-autobuilder-helper/scripts/send_qa_email.py"),
             util.Property("send_email"),
             util.Interpolate("%(prop:builddir)s/layerinfo.json"),
             util.Interpolate("%(prop:sharedrepolocation)s"),
