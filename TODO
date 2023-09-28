@@ -1,10 +1,8 @@
 
  * Add nightly-checkuri
- * Add wikilog link on console page
  * per worker auth (workers.py & config.py)
  * Add IRC notifier (services.py) [Michael]
  * add mail notification functionality to yocto-autobuilder-helper, it already
    knows how to iterate error reports. (services.py)
  * Simple script to start buildbot controller, janitor and PRServer [Michael]
  * Look into allowed_origins property of built in web server
- * switch wikilog to buildbot.util.service.HTTPClient?

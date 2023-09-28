@@ -26,16 +26,14 @@ yocto-autobuilder-helper script parameters.
 
 ### Code layout
 - [builders.py](builders.py) -- configures the builders with minimal buildsteps to invoke the yocto-autobuilder-helper scripts
-- lib/
-  - [wiki.py](lib/wiki.py) -- implements some mediawiki related functionality as used by the wikilog plugin
 reporters/
-  - [wikilog.py](reporters/wikilog.py) -- our custom plugin to write info on build failures to a wiki page
+  - [swatbot.py](reporters/swatbot.py) -- our custom plugin to write info on build failures to a swatbot instance
 - steps/
   - [writelayerinfo.py](steps/writelayerinfo.py) -- write the user supplied (or default) repos to a JSON file for use by the scripts
 - [config.py](config.py) -- goal is to contain all values that might need changing to redeploy this code elsewhere. Goal hasn't yet been met.
 - [master.cfg](master.cfg) -- calls into other scripts to do most configuration. Cluster specific config still lives here (i.e. controller url).
 - [schedulers.py](schedulers.py) -- sets up the force schedulers with controls for modifying inputs for each builder.
-- [services.py](services.py) -- configures irc, mail and wikilog reporters.
+- [services.py](services.py) -- configures irc, mail and swatbot reporters.
 - [workers.py](workers.py) -- configures the worker objects
 - [www.py](www.py) -- sets up the web UI
 
@@ -50,14 +48,9 @@ yocto-autobuilder[2].
 custom buildset to iterate the repo_, branch_, and commit_ properties set by
 the schedulers and write a JSON file with the user's values.
 
-### WikiLog reporter
-[reporters/wikilog.py](reporters/wikilog.py) -- a buildbot service to listen
-for build failures and write some information on them to the configured wiki
-page.
-
-[lib/wiki.py](lib/wiki.py) -- some helper functions for the wiki plugin, much
-of this code can be replaced by porting the plugin to be a
-buildbot.util.service.HTTPClient implementation
+### Swatbot reporter
+[reporters/swatbot.py](reporters/swatbot.py) -- a buildbot service to listen
+for build failures and write some information on them to the swatbot instance configured.
 
 ## Deployment
 The following deployment steps assume that the target system has a copy of

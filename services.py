@@ -36,12 +36,6 @@ generator = reporters.BuildStatusGenerator(
 #                   channels=["yocto"],
 #                   noticeOnChannel=True))
 
-# from yoctoabb.reporters import wikilog
-# services.append(
-#     wikilog.WikiLog("https://wiki.yoctoproject.org/wiki/api.php",
-#                     "User", "password", "LogPage",
-#                     "Production Cluster")
-# )
 
 # from yoctoabb.reporters import swatbot
 # services.append(
