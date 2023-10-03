@@ -125,6 +125,7 @@ builders_others = [
     "qemux86-ptest", "qemux86-ptest-fast",
     "buildperf-debian11",
     "buildperf-alma8",
+    "reproducible-meta-oe",
     "auh"
 ]
 
