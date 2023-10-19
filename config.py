@@ -27,6 +27,7 @@ buildertorepos = {
     "check-layer-nightly": ["poky", "meta-agl", "meta-arm", "meta-aws", "meta-intel", "meta-openembedded", "meta-virtualization", "meta-ti", "meta-security", "meta-clang"],
     "docs": ["yocto-docs", "bitbake"],
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
+    "meta-oe-mirror":  ["poky", "meta-openembedded"],
     "default": ["poky"]
 }
 
@@ -127,6 +128,7 @@ builders_others = [
     "buildperf-debian11",
     "buildperf-alma8",
     "reproducible-meta-oe",
+    "meta-oe-mirror",
     "auh"
 ]
 
