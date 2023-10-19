@@ -60,6 +60,22 @@ branchdefaults = {
         'branch_meta-openembedded': 'master',
         'branch_oecore': 'master',
     },
+    'nanbield': {
+        'branch': 'nanbield',
+        'branch_poky': 'nanbield',
+        'branch_bitbake': '2.6',
+        'branch_meta-arm': 'master',
+        'branch_meta-agl': 'next',
+        'branch_meta-aws': 'master',
+        'branch_meta-gplv2': 'master',
+        'branch_meta-intel': 'master',
+        'branch_meta-mingw': 'nanbield',
+        'branch_meta-openembedded': 'master',
+        'branch_meta-ti': 'master',
+        'branch_meta-virtualization': 'master',
+        'branch_oecore': 'nanbield',
+    },
+
     'mickledore': {
         'branch': 'mickledore',
         'branch_poky': 'mickledore',
@@ -392,7 +408,7 @@ def parent_scheduler(target):
             name="branchselector",
             default="master",
             label="Release Shortcut Selector",
-            choices=["master", "master-next", "abelloni-next", "mut", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
+            choices=["master", "master-next", "abelloni-next", "mut", "nanbield", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
             selectors=branchdefaults),
         util.BooleanParameter(
             name="swat_monitor",
@@ -461,6 +477,12 @@ schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror', branch='master', 
 # Run metrics at 7am each day
 schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'),
                   builderNames=['metrics'], hour=7, minute=0))
+
+# Run check-layer-nightly amd meta-oe-mirror twice a week for nanbield
+schedulers.append(sched.Nightly(name='nightly-check-layer-nanbield', properties=parent_default_props('check-layer-nightly', 'nanbield'),
+                  builderNames=['check-layer-nightly'], dayOfWeek=[3, 7], hour=2, minute=0, codebases = {'' : {'branch' : 'nanbield'}}))
+schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror-nanbield', properties=parent_default_props('meta-oe-mirror', 'nanbield'),
+                  builderNames=['meta-oe-mirror'], dayOfWeek=[3, 7], hour=2, minute=0, codebases = {'' : {'branch' : 'nanbield'}}))
 
 # Run check-layer-nightly amd meta-oe-mirror twice a week for mickledore
 schedulers.append(sched.Nightly(name='nightly-check-layer-mickledore', properties=parent_default_props('check-layer-nightly', 'mickledore'),
