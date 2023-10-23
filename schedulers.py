@@ -474,9 +474,12 @@ schedulers.append(sched.Nightly(name='nightly-check-layer', branch='master', pro
 schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror', branch='master', properties=parent_default_props('meta-oe-mirror'),
                   builderNames=['meta-oe-mirror'], hour=0, minute=0))
 
-# Run metrics at 7am each day
-schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'),
-                  builderNames=['metrics'], hour=7, minute=0))
+# Run metrics at 3-7am each day
+schedulers.append(sched.Nightly(name='nightly-metrics-dunfell', branch='dunfell', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=3, minute=0))
+schedulers.append(sched.Nightly(name='nightly-metrics-kirkstone', branch='kirkstone', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=4, minute=0))
+schedulers.append(sched.Nightly(name='nightly-metrics-mickledore', branch='mickledore', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=5, minute=0))
+schedulers.append(sched.Nightly(name='nightly-metrics-nanbield', branch='nanbield', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=6, minute=0))
+schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=7, minute=0))
 
 # Run check-layer-nightly amd meta-oe-mirror twice a week for nanbield
 schedulers.append(sched.Nightly(name='nightly-check-layer-nanbield', properties=parent_default_props('check-layer-nightly', 'nanbield'),
