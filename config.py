@@ -29,6 +29,7 @@ buildertorepos = {
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
     "patchtest": ["poky", "meta-patchtest", "meta-openembedded"],
     "meta-oe-mirror":  ["poky", "meta-openembedded"],
+    "metrics":  ["poky", "meta-openembedded"],
     "default": ["poky"]
 }
 
