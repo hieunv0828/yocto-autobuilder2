@@ -27,7 +27,7 @@ buildertorepos = {
     "check-layer-nightly": ["poky", "meta-agl", "meta-arm", "meta-aws", "meta-intel", "meta-openembedded", "meta-virtualization", "meta-ti", "meta-security", "meta-clang"],
     "docs": ["yocto-docs", "bitbake"],
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
-    "patchtest": ["poky", "meta-patchtest"],
+    "patchtest": ["poky", "meta-patchtest", "meta-openembedded"],
     "meta-oe-mirror":  ["poky", "meta-openembedded"],
     "default": ["poky"]
 }
