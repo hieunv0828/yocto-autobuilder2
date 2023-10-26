@@ -27,6 +27,7 @@ buildertorepos = {
     "check-layer-nightly": ["poky", "meta-agl", "meta-arm", "meta-aws", "meta-intel", "meta-openembedded", "meta-virtualization", "meta-ti", "meta-security", "meta-clang"],
     "docs": ["yocto-docs", "bitbake"],
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
+    "patchtest": ["poky", "meta-patchtest"],
     "meta-oe-mirror":  ["poky", "meta-openembedded"],
     "default": ["poky"]
 }
@@ -55,6 +56,7 @@ repos = {
     "meta-qt3": ["ssh://git@push.yoctoproject.org/meta-qt3", "master"],
     "meta-mingw": ["ssh://git@push.yoctoproject.org/meta-mingw", "master"],
     "meta-gplv2": ["ssh://git@push.yoctoproject.org/meta-gplv2", "master"],
+    "meta-patchtest": ["ssh://git@push.yoctoproject.org/meta-patchtest", "master"],
     "meta-openembedded": ["ssh://git@push.openembedded.org/meta-openembedded", "master"],
     "meta-virtualization": ["ssh://git@push.yoctoproject.org/meta-virtualization", "master"],
     "yocto-docs": ["ssh://git@push.yoctoproject.org/yocto-docs", "master"],
@@ -128,6 +130,7 @@ builders_others = [
     "buildperf-debian11",
     "buildperf-alma8",
     "reproducible-meta-oe",
+    "patchtest",
     "meta-oe-mirror",
     "auh"
 ]
