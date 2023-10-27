@@ -132,6 +132,7 @@ builders_others = [
     "buildperf-alma8",
     "reproducible-meta-oe",
     "patchtest",
+    "yocto-mirror",
     "meta-oe-mirror",
     "auh"
 ]
