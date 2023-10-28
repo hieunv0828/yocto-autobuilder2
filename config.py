@@ -29,6 +29,7 @@ buildertorepos = {
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
     "patchtest": ["poky", "meta-patchtest", "meta-openembedded"],
     "meta-oe-mirror":  ["poky", "meta-openembedded"],
+    "auh-meta-oe":  ["poky", "meta-openembedded"],
     "metrics":  ["poky", "meta-openembedded"],
     "default": ["poky"]
 }
@@ -134,7 +135,7 @@ builders_others = [
     "patchtest",
     "yocto-mirror",
     "meta-oe-mirror",
-    "auh"
+    "auh", "auh-meta-oe"
 ]
 
 subbuilders = list(set(trigger_builders_wait_quick + trigger_builders_wait_full + trigger_builders_wait_perf + builders_others))
@@ -213,6 +214,7 @@ builder_to_workers = {
     "qemuarm64-ltp": workers_arm,
     "qemuarm64-armhost": workers_arm,
     "auh" : workers_auh,
+    "auh-meta-oe" : workers_auh,
     "default": workers
 }
 
