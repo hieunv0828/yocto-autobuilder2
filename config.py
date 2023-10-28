@@ -29,7 +29,8 @@ buildertorepos = {
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
     "patchtest": ["poky", "meta-patchtest", "meta-openembedded"],
     "meta-oe-mirror":  ["poky", "meta-openembedded"],
-    "auh-meta-oe":  ["poky", "meta-openembedded"],
+    "auh":  ["poky", "auto-upgrade-helper"],
+    "auh-meta-oe":  ["poky", "meta-openembedded", "auto-upgrade-helper"],
     "metrics":  ["poky", "meta-openembedded"],
     "default": ["poky"]
 }
@@ -54,6 +55,7 @@ repos = {
     "oecore": ["ssh://git@push.openembedded.org/openembedded-core",
                           "master"],
     "bitbake": ["ssh://git@push.openembedded.org/bitbake", "master"],
+    "auto-upgrade-helper": ["ssh://git@push.yoctoproject.org/auto-upgrade-helper", "master"],
     "meta-qt4": ["ssh://git@push.yoctoproject.org/meta-qt4", "master"],
     "meta-qt3": ["ssh://git@push.yoctoproject.org/meta-qt3", "master"],
     "meta-mingw": ["ssh://git@push.yoctoproject.org/meta-mingw", "master"],
