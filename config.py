@@ -134,6 +134,7 @@ builders_others = [
     "buildperf-debian11",
     "buildperf-alma8",
     "reproducible-meta-oe",
+    "toaster",
     "patchtest",
     "yocto-mirror",
     "meta-oe-mirror",
