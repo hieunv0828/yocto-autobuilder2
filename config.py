@@ -89,6 +89,7 @@ trigger_builders_wait_shared = [
     "qa-extras", "qa-extras2",
     "check-layer", "meta-mingw",
     "reproducible",
+    "patchtest-selftest",
     "oe-selftest-armhost",
     "qemuarm64-armhost"
 ]
