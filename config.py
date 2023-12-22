@@ -56,6 +56,7 @@ repos = {
                           "master"],
     "bitbake": ["ssh://git@push.openembedded.org/bitbake", "master"],
     "auto-upgrade-helper": ["ssh://git@push.yoctoproject.org/auto-upgrade-helper", "master"],
+    "meta-qt6": ["http://code.qt.io/yocto/meta-qt6.git", "dev"],
     "meta-qt4": ["ssh://git@push.yoctoproject.org/meta-qt4", "master"],
     "meta-qt3": ["ssh://git@push.yoctoproject.org/meta-qt3", "master"],
     "meta-mingw": ["ssh://git@push.yoctoproject.org/meta-mingw", "master"],
@@ -65,6 +66,7 @@ repos = {
     "meta-virtualization": ["ssh://git@push.yoctoproject.org/meta-virtualization", "master"],
     "yocto-docs": ["ssh://git@push.yoctoproject.org/yocto-docs", "master"],
     "meta-clang": ["https://github.com/kraj/meta-clang.git", "master"],
+    "meta-webosose": ["https://github.com/webosose/meta-webosose.git", "master"],
 }
 
 trigger_builders_wait_shared = [
