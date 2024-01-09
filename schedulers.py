@@ -45,6 +45,8 @@ branchdefaults = {
         'branch_poky': 'abelloni/master-next',
         'repo_oecore': 'ssh://git@push.openembedded.org/openembedded-core-contrib',
         'branch_oecore': 'abelloni/master-next',
+        'repo_bitbake': 'ssh://git@push.openembedded.org/bitbake-contrib',
+        'branch_bitbake': 'abelloni/master-next',
     },
     'mut': {
         'branch': 'master',
