@@ -509,6 +509,10 @@ schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror-dunfell', propertie
 schedulers.append(sched.Nightly(name='nightly-buildperf', branch='master', properties=parent_default_props('buildperf-debian11'),
                   builderNames=['buildperf-debian11', 'buildperf-alma8'], hour=[3,9,15,21], minute=0))
 
+# Run the toaster tests daily
+schedulers.append(sched.Nightly(name='nightly-toaster', branch='master', properties=parent_default_props('toaster'),
+                  builderNames=['toaster'], hour=[3], minute=0))
+
 # Run the AUH twice a month on 1st and 15th
 schedulers.append(sched.Nightly(name='nightly-auh', branch='master', properties=parent_default_props('auh'),
                   builderNames=['auh'], dayOfMonth=[1, 15], hour=5, minute=0))
