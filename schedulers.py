@@ -476,6 +476,10 @@ schedulers.append(sched.Nightly(name='nightly-check-layer', branch='master', pro
 schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror', branch='master', properties=parent_default_props('meta-oe-mirror'),
                   builderNames=['meta-oe-mirror'], hour=0, minute=0))
 
+# Run reproducible-meta-oe for master once a week on weekends (2am on Saturday)
+schedulers.append(sched.Nightly(name='nightly-reproducible-meta-oe', branch='master', properties=parent_default_props('reproducible-meta-oe'),
+                  builderNames=['reproducible-meta-oe'], hour=2, minute=0, dayOfWeek=5))
+
 # Run metrics at 3-7am each day
 schedulers.append(sched.Nightly(name='nightly-metrics-dunfell', branch='dunfell', properties=parent_default_props('metrics', 'dunfell'), builderNames=['metrics'], hour=6, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-kirkstone', branch='kirkstone', properties=parent_default_props('metrics', 'kirkstone'), builderNames=['metrics'], hour=6, minute=15, codebases = {'' : {'branch' : 'kirkstone'}}))
