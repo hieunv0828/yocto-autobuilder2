@@ -489,23 +489,26 @@ schedulers.append(sched.Nightly(name='nightly-metrics-mickledore', branch='mickl
 schedulers.append(sched.Nightly(name='nightly-metrics-nanbield', branch='nanbield', properties=parent_default_props('metrics', 'nanbield'), builderNames=['metrics'], hour=6, minute=45, codebases = {'' : {'branch' : 'nanbield'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=7, minute=0))
 
-# Run check-layer-nightly amd meta-oe-mirror twice a week for nanbield
+# Run check-layer-nightly twice a week for nanbield
 schedulers.append(sched.Nightly(name='nightly-check-layer-nanbield', properties=parent_default_props('check-layer-nightly', 'nanbield'),
                   builderNames=['check-layer-nightly'], dayOfWeek=[3, 7], hour=2, minute=0, codebases = {'' : {'branch' : 'nanbield'}}))
+# Run meta-oe-mirror twice a month for nanbield
 schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror-nanbield', properties=parent_default_props('meta-oe-mirror', 'nanbield'),
-                  builderNames=['meta-oe-mirror'], dayOfWeek=[3, 7], hour=2, minute=0, codebases = {'' : {'branch' : 'nanbield'}}))
+                  builderNames=['meta-oe-mirror'], dayOfMonth=[1, 15], hour=2, minute=0, codebases = {'' : {'branch' : 'nanbield'}}))
 
-# Run check-layer-nightly and meta-oe-mirror twice a week for kirkstone
+# Run check-layer-nightly twice a week for kirkstone
 schedulers.append(sched.Nightly(name='nightly-check-layer-kirkstone', properties=parent_default_props('check-layer-nightly', 'kirkstone'),
                   builderNames=['check-layer-nightly'], dayOfWeek=[0, 3], hour=2, minute=0, codebases = {'' : {'branch' : 'kirkstone'}}))
+# Run meta-oe-mirror twice a month for kirkstone
 schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror-kirkstone', properties=parent_default_props('meta-oe-mirror', 'kirkstone'),
-                  builderNames=['meta-oe-mirror'], dayOfWeek=[0, 3], hour=2, minute=0, codebases = {'' : {'branch' : 'kirkstone'}}))
+                  builderNames=['meta-oe-mirror'], dayOfMonth=[2, 16], hour=2, minute=0, codebases = {'' : {'branch' : 'kirkstone'}}))
 
-# Run check-layer-nightly and meta-oe-mirror twice a week for dunfell
+# Run check-layer-nightly twice a week for dunfell
 schedulers.append(sched.Nightly(name='nightly-check-layer-dunfell', properties=parent_default_props('check-layer-nightly', 'dunfell'),
                   builderNames=['check-layer-nightly'], dayOfWeek=[1, 4], hour=2, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
+# Run meta-oe-mirror twice a month for dunfell
 schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror-dunfell', properties=parent_default_props('meta-oe-mirror', 'dunfell'),
-                  builderNames=['meta-oe-mirror'], dayOfWeek=[1, 4], hour=2, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
+                  builderNames=['meta-oe-mirror'], dayOfMonth=[3, 17], hour=2, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
 
 # Run the build performance tests at 3am, 9am, 3pm and 9pm
 schedulers.append(sched.Nightly(name='nightly-buildperf', branch='master', properties=parent_default_props('buildperf-debian11'),
