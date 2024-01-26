@@ -283,6 +283,8 @@ def repos_for_builder(buildername):
 def parent_default_props(buildername, branchname=None):
     props = {}
     props["swat_monitor"] = True
+    if buildername in ['reproducible-meta-oe', 'meta-oe-mirror']:
+        props["swat_monitor"] = False
     repos = config.buildertorepos.get(buildername)
     if not repos:
         repos = config.buildertorepos["default"]
