@@ -142,7 +142,8 @@ builders_others = [
     "patchtest",
     "yocto-mirror",
     "meta-oe-mirror",
-    "auh", "auh-meta-oe"
+    "auh", "auh-meta-oe",
+    "meta-webosose"
 ]
 
 subbuilders = list(set(trigger_builders_wait_quick + trigger_builders_wait_full + trigger_builders_wait_perf + builders_others))
