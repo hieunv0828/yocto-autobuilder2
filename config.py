@@ -32,6 +32,7 @@ buildertorepos = {
     "auh":  ["poky", "auto-upgrade-helper"],
     "auh-meta-oe":  ["poky", "meta-openembedded", "auto-upgrade-helper"],
     "metrics":  ["poky", "meta-openembedded"],
+    "meta-webosose":  ["poky", "meta-clang", "meta-openembedded", "meta-qt6", "meta-webosose"],
     "default": ["poky"]
 }
 
