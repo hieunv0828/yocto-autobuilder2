@@ -17,6 +17,7 @@ buildertorepos = {
     "meta-oe": ["poky", "meta-openembedded"],
     "meta-virt": ["poky", "meta-openembedded", "meta-virtualization"],
     "meta-intel": ["poky", "meta-intel"],
+    "meta-exein": ["poky", "meta-exein", "meta-openembedded"],
     "meta-arm": ["poky", "meta-arm"],
     "meta-agl-core": ["poky", "meta-agl"],
     "meta-aws": ["poky", "meta-aws", "meta-openembedded"],
@@ -24,7 +25,7 @@ buildertorepos = {
     "qemuarm-oecore": ["oecore", "bitbake"],
     "checkuri": ["poky"],
     "check-layer": ["poky", "meta-mingw", "meta-gplv2"],
-    "check-layer-nightly": ["poky", "meta-agl", "meta-arm", "meta-aws", "meta-intel", "meta-openembedded", "meta-virtualization", "meta-ti", "meta-security", "meta-clang"],
+    "check-layer-nightly": ["poky", "meta-agl", "meta-arm", "meta-aws", "meta-intel", "meta-openembedded", "meta-virtualization", "meta-ti", "meta-security", "meta-clang", "meta-exein"],
     "docs": ["yocto-docs", "bitbake"],
     "reproducible-meta-oe": ["poky", "meta-openembedded"],
     "patchtest": ["poky", "meta-patchtest", "meta-openembedded"],
@@ -52,6 +53,7 @@ repos = {
     "meta-agl": ["https://git.automotivelinux.org/AGL/meta-agl", "next"],
     "meta-aws": ["https://github.com/aws/meta-aws.git", "master"],
     "meta-ti": ["ssh://git@push.yoctoproject.org/meta-ti", "master"],
+    "meta-exein": ["https://github.com/exein-io/meta-exein-official", "master"],
     "meta-security": ["ssh://git@push.yoctoproject.org/meta-security", "master"],
     "oecore": ["ssh://git@push.openembedded.org/openembedded-core",
                           "master"],
@@ -126,7 +128,7 @@ trigger_builders_wait_perf = ["buildperf-debian11", "buildperf-alma8"]
 # Builders which are individually triggered
 builders_others = [
     "reproducible-ubuntu", "reproducible-debian", "reproducible-fedora", "reproducible-centos",
-    "meta-oe", "meta-virt", "meta-clang",
+    "meta-oe", "meta-virt", "meta-clang", "meta-exein",
     "bringup", "bringup-fast",
     "qemuarm-armhost",
     "check-layer-nightly",
