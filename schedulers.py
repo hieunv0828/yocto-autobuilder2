@@ -24,6 +24,7 @@ branchdefaults = {
         'branch_meta-gplv2': 'master',
         'branch_meta-intel': 'master',
         'branch_meta-mingw': 'master',
+        'branch_meta-exein': 'main',
         'branch_meta-openembedded': 'master',
         'branch_oecore': 'master',
     },
