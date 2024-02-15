@@ -53,7 +53,7 @@ repos = {
     "meta-agl": ["https://git.automotivelinux.org/AGL/meta-agl", "next"],
     "meta-aws": ["https://github.com/aws/meta-aws.git", "master"],
     "meta-ti": ["ssh://git@push.yoctoproject.org/meta-ti", "master"],
-    "meta-exein": ["https://github.com/exein-io/meta-exein-official", "main"],
+    "meta-exein": ["https://github.com/exein-io/meta-exein", "main"],
     "meta-security": ["ssh://git@push.yoctoproject.org/meta-security", "master"],
     "oecore": ["ssh://git@push.openembedded.org/openembedded-core",
                           "master"],
