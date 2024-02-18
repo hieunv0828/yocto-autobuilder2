@@ -111,12 +111,14 @@ trigger_builders_wait_full = trigger_builders_wait_shared + [
 ]
 
 trigger_builders_wait_quick_releases = {
+    "master" : trigger_builders_wait_quick + ["qemuriscv64"],
     "zeus" : trigger_builders_wait_quick + ["mpc8315e-rdb"],
     "thud" : trigger_builders_wait_quick + ["mpc8315e-rdb"],
     "sumo" : trigger_builders_wait_quick + ["mpc8315e-rdb"]
 }
 
 trigger_builders_wait_full_releases = {
+    "master" : trigger_builders_wait_full + ["qemuriscv64"],
     "zeus" : trigger_builders_wait_full + ["mpc8315e-rdb-alt"],
     "thud" : trigger_builders_wait_full + ["mpc8315e-rdb-alt"],
     "sumo" : trigger_builders_wait_shared + ["qemumips-alt", "edgerouter-alt", "mpc8315e-rdb-alt", "qemuppc-alt", "qemux86-world-alt",
