@@ -63,6 +63,21 @@ branchdefaults = {
         'branch_meta-openembedded': 'master',
         'branch_oecore': 'master',
     },
+    'scarthgap': {
+        'branch': 'scarthgap',
+        'branch_poky': 'scarthgap',
+        'branch_bitbake': '2.8',
+        'branch_meta-arm': 'master',
+        'branch_meta-agl': 'next',
+        'branch_meta-aws': 'master',
+        'branch_meta-gplv2': 'master',
+        'branch_meta-intel': 'master',
+        'branch_meta-mingw': 'scarthgap',
+        'branch_meta-openembedded': 'master',
+        'branch_meta-ti': 'master',
+        'branch_meta-virtualization': 'master',
+        'branch_oecore': 'scarthgap',
+    },
     'nanbield': {
         'branch': 'nanbield',
         'branch_poky': 'nanbield',
@@ -78,7 +93,6 @@ branchdefaults = {
         'branch_meta-virtualization': 'nanbield',
         'branch_oecore': 'nanbield',
     },
-
     'mickledore': {
         'branch': 'mickledore',
         'branch_poky': 'mickledore',
@@ -413,7 +427,7 @@ def parent_scheduler(target):
             name="branchselector",
             default="master",
             label="Release Shortcut Selector",
-            choices=["master", "master-next", "abelloni-next", "mut", "nanbield", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
+            choices=["master", "master-next", "abelloni-next", "mut", "scarthgap", "nanbield", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
             selectors=branchdefaults),
         util.BooleanParameter(
             name="swat_monitor",

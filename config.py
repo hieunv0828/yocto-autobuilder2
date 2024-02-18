@@ -112,6 +112,7 @@ trigger_builders_wait_full = trigger_builders_wait_shared + [
 
 trigger_builders_wait_quick_releases = {
     "master" : trigger_builders_wait_quick + ["qemuriscv64"],
+    "scarthgap" : trigger_builders_wait_quick + ["qemuriscv64"],
     "zeus" : trigger_builders_wait_quick + ["mpc8315e-rdb"],
     "thud" : trigger_builders_wait_quick + ["mpc8315e-rdb"],
     "sumo" : trigger_builders_wait_quick + ["mpc8315e-rdb"]
@@ -119,6 +120,7 @@ trigger_builders_wait_quick_releases = {
 
 trigger_builders_wait_full_releases = {
     "master" : trigger_builders_wait_full + ["qemuriscv64"],
+    "scarthgap" : trigger_builders_wait_full + ["qemuriscv64"],
     "zeus" : trigger_builders_wait_full + ["mpc8315e-rdb-alt"],
     "thud" : trigger_builders_wait_full + ["mpc8315e-rdb-alt"],
     "sumo" : trigger_builders_wait_shared + ["qemumips-alt", "edgerouter-alt", "mpc8315e-rdb-alt", "qemuppc-alt", "qemux86-world-alt",
@@ -183,6 +185,7 @@ all_workers = workers + workers_bringup + workers_buildperf + workers_arm
 
 # Worker filtering for older releases
 workers_prev_releases = {
+    "scarthgap" : ("alma8", "alma9", "debian11", "debian12", "fedora38", "opensuse154", "rocky9", "stream8", "ubuntu1804", "ubuntu2004","ubuntu2204", "ubuntu2304", "perf-"),
     "nanbield" : ("alma8", "alma9", "debian11", "debian12", "fedora37", "fedora38", "opensuse153", "opensuse154", "rocky9", "stream8", "ubuntu1804", "ubuntu2004","ubuntu2204", "ubuntu2304", "perf-"),
     "mickledore" : ("alma8", "alma9", "debian10", "debian11", "fedora35", "fedora36", "fedora37", "fedora38", "opensuse153", "opensuse154", "ubuntu1804", "ubuntu2004","ubuntu2204", "perf-"),
     "langdale" : ("alma8", "alma9", "debian10", "debian11", "fedora35", "fedora36", "opensuse153", "opensuse154", "ubuntu1804", "ubuntu2004","ubuntu2204", "perf-"),
