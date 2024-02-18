@@ -144,12 +144,13 @@ def get_runconfig_legacy_step(posttrigger):
         timeout=16200)  # default of 1200s/20min is too short, use 4.5hrs
     return step
 
-def get_runconfig_step(name, stepname, phase, description, posttrigger):
+def get_runconfig_step(name, stepname, phase, description, usepty, posttrigger):
     step = SimpleLogObserver(
         command=get_runconfig_command(posttrigger) + ['--stepname', stepname, '--phase', phase],
         name=name,
         description=description,
         lazylogfiles=True,
+        usePTY=usepty,
         timeout=16200)  # default of 1200s/20min is too short, use 4.5hrs
     return step
 
@@ -198,11 +199,13 @@ class RunConfigCheckSteps(shell.ShellCommand):
         else:
             steps = []
             for s in jsonconfig:
+                if 'usepty' not in s:
+                    s['usepty'] = False
                 if 'bbname' in s:
                     name = s['bbname']
                 else:
                     name = "run-config-" + s['name'] + "-" + s['phase']
-                steps.append(get_runconfig_step(name, s['name'], s['phase'], s['description'], self.posttrigger))
+                steps.append(get_runconfig_step(name, s['name'], s['phase'], s['description'], s['usepty'], self.posttrigger))
         self.build.addStepsAfterCurrentStep(steps)
         return SUCCESS
 
