@@ -119,7 +119,7 @@ trigger_builders_wait_quick_releases = {
 }
 
 trigger_builders_wait_full_releases = {
-    "master" : trigger_builders_wait_full + ["qemuriscv64", "qemuriscv64-tc"],
+    "master" : trigger_builders_wait_full + ["qemuriscv64", "qemuriscv64-tc", "meta-clang"],
     "scarthgap" : trigger_builders_wait_full + ["qemuriscv64", "qemuriscv64-tc"],
     "zeus" : trigger_builders_wait_full + ["mpc8315e-rdb-alt"],
     "thud" : trigger_builders_wait_full + ["mpc8315e-rdb-alt"],
