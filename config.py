@@ -84,6 +84,7 @@ trigger_builders_wait_shared = [
     "qemux86-64-x32", "qemux86-world",
     "multilib",
     "edgerouter",
+    "genericarm64", "genericarm64-alt",
     "genericx86", "genericx86-alt",
     "genericx86-64", "genericx86-64-alt",
     "beaglebone", "beaglebone-alt",
@@ -270,11 +271,13 @@ builder_tags = {
 
     "beaglebone": ["hw-ref"],
     "edgerouter": ["hw-ref"],
+    "genericarm64": ["hw-ref"],
     "genericx86": ["hw-ref"],
     "genericx86-64": ["hw-ref"],
 
     "beaglebone-alt": ["hw-ref-alt"],
     "edgerouter-alt": ["hw-ref-alt"],
+    "genericarm64-alt": ["hw-ref-alt"],
     "genericx86-alt": ["hw-ref-alt"],
     "genericx86-64-alt": ["hw-ref-alt"],
 
