@@ -497,12 +497,14 @@ schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror', branch='master', 
 schedulers.append(sched.Nightly(name='nightly-reproducible-meta-oe', branch='master', properties=parent_default_props('reproducible-meta-oe'),
                   builderNames=['reproducible-meta-oe'], hour=2, minute=0, dayOfWeek=5))
 
-# Run metrics at 3-7am each day
+# Run metrics at 5-7am each day
+# Starts with master which may do a full CVE database download and start other
+# branches 1 hour later to allow them to re-use the fresh download.
+schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=5, minute=0))
 schedulers.append(sched.Nightly(name='nightly-metrics-dunfell', branch='dunfell', properties=parent_default_props('metrics', 'dunfell'), builderNames=['metrics'], hour=6, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-kirkstone', branch='kirkstone', properties=parent_default_props('metrics', 'kirkstone'), builderNames=['metrics'], hour=6, minute=15, codebases = {'' : {'branch' : 'kirkstone'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-mickledore', branch='mickledore', properties=parent_default_props('metrics', 'mickledore'), builderNames=['metrics'], hour=6, minute=30, codebases = {'' : {'branch' : 'mickledore'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-nanbield', branch='nanbield', properties=parent_default_props('metrics', 'nanbield'), builderNames=['metrics'], hour=6, minute=45, codebases = {'' : {'branch' : 'nanbield'}}))
-schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=7, minute=0))
 
 # Run check-layer-nightly twice a week for nanbield
 schedulers.append(sched.Nightly(name='nightly-check-layer-nanbield', properties=parent_default_props('check-layer-nightly', 'nanbield'),
