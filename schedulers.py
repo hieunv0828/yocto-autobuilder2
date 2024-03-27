@@ -91,6 +91,7 @@ branchdefaults = {
         'branch_meta-openembedded': 'nanbield',
         'branch_meta-ti': 'master',
         'branch_meta-virtualization': 'nanbield',
+        'branch_meta-exein': 'nanbield',
         'branch_oecore': 'nanbield',
     },
     'mickledore': {
