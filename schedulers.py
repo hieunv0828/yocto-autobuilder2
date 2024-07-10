@@ -141,6 +141,8 @@ branchdefaults = {
         'branch_meta-ti': 'kirkstone',
         'branch_meta-virtualization': 'kirkstone',
         'branch_oecore': 'kirkstone',
+        'branch_meta-webosose': 'kirkstone-webos',
+        'branch_meta-qt6': '6.6.0',
     },
     'honister': {
         'branch': 'honister',
@@ -554,3 +556,7 @@ schedulers.append(sched.AnyBranchScheduler(name="bitbake-docs-changed",
             onlyImportant=True,
             treeStableTimer=60,
             builderNames=["docs"]))
+
+# Run meta-webosose for kirkstone once a week on weekends (2am on Friday)
+schedulers.append(sched.Nightly(name='nightly-meta-webosose', branch='kirkstone', properties=parent_default_props('meta-webosose', 'kirkstone'),
+                  builderNames=['meta-webosose'], hour=2, minute=0, dayOfWeek=4))
