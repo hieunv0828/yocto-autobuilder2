@@ -536,6 +536,10 @@ schedulers.append(sched.Nightly(name='nightly-toaster', branch='master', propert
 schedulers.append(sched.Nightly(name='nightly-auh', branch='master', properties=parent_default_props('auh'),
                   builderNames=['auh'], dayOfMonth=[1, 15], hour=5, minute=0))
 
+# Run the indexing targets every 15 mins
+schedulers.append(sched.Nightly(name='sschduler-indexing', branch='master', properties=parent_default_props('indexing'),
+                  builderNames=['indexing'], minute=[0,15,30,45]))
+
 # If any of our sphinx docs branches change, trigger a build
 schedulers.append(sched.AnyBranchScheduler(name="yocto-docs-changed",
             change_filter=util.ChangeFilter(project=["yocto-docs"], branch=[None, "master", "master-next", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "transition"]),

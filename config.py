@@ -137,7 +137,7 @@ builders_others = [
     "bringup", "bringup-fast",
     "qemuarm-armhost",
     "check-layer-nightly",
-    "metrics",
+    "metrics", "indexing",
     "qemuriscv32", "qemuriscv32-tc",
     "qemuriscv64", "qemuriscv64-ptest", "qemuriscv64-tc",
     "qemuppc64", "qemuppc64-tc",
