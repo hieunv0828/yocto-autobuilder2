@@ -228,7 +228,7 @@ class Console {
         const builders_with_builds = [];
         let builderids_with_builds = "";
         for (let builder of Array.from(all_builders)) {
-            if (builder.hasBuild) {
+            if (builder.hasBuild && builder.name != 'indexing') {
                 builders_with_builds.push(builder);
                 builderids_with_builds += `.${builder.builderid}`;
             }
@@ -373,7 +373,9 @@ class Console {
 
         }
 
-        change.buildersById[build.builderid].builds.push(build);
+        if (build.builderid in change.buildersById) {
+            change.buildersById[build.builderid].builds.push(build);
+        }
     }
 
     makeFakeChange(revision, when_timestamp, comments) {
