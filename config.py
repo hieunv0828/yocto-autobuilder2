@@ -181,6 +181,7 @@ workers_arm = ["ubuntu1804-arm-1", "ubuntu2004-arm-1", "ubuntu2204-arm-1"]
 workers_buildperf = ["perf-debian11", "perf-alma8"]
 # workers which don't need buildtools for AUH and are able to send email to mailing lists
 workers_auh = ["alma8-ty-1"]
+# toaster doesn't work on fedora 39/40
 workers_toaster = ['fedora38-ty-2', 'fedora38-ty-3', 'fedora38-ty-4', 'fedora38-ty-6', 'ubuntu2304-ty-1', 'opensuse154-ty-1', 'opensuse154-ty-2', 'opensuse154-ty-3']
 
 all_workers = workers + workers_bringup + workers_buildperf + workers_arm
