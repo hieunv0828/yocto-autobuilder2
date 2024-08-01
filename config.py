@@ -166,21 +166,22 @@ publish_dest = "/srv/autobuilder/autobuilder.yocto.io/pub"
 web_port = 8010
 
 # List of workers in the cluster
-workers_ubuntu = ["ubuntu1604-ty-1", "ubuntu1804-ty-3",  "ubuntu2004-ty-1", "ubuntu2110-ty-2"]
-workers_centos = ["alma8-ty-1", "alma8-ty-2", "centos7-ty-4", "centos8-ty-1", "centos8-ty-2", "stream8-ty-1"]
-workers_fedora = ["fedora34-ty-1", "fedora35-ty-1", "fedora35-ty-2"]
-workers_debian = ["debian9-ty-2", "debian10-ty-1", "debian11-ty-1", "debian11-ty-2", "debian11-ty-3"]
-workers_opensuse = ["tumbleweed-ty-3", "opensuse153-ty-1", "opensuse154-ty-1"]
+workers_ubuntu = ["ubuntu2004-ty-1", 'ubuntu2204-ty-1', 'ubuntu2204-ty-2', 'ubuntu2204-ty-3', 'ubuntu2304-ty-1', 'ubuntu2310-ty-1']
+workers_centos = ["alma9-ty-1", "alma9-ty-2", "alma8-ty-1", "stream8-ty-1", "rocky9-ty-1"]
+workers_fedora = ['fedora38-ty-2', 'fedora38-ty-3', 'fedora38-ty-4', 'fedora38-ty-6', 'fedora39-ty-2', 'fedora40-ty-1']
+workers_debian = ["debian11-ty-1", "debian11-ty-3", "debian12-ty-1", "debian12-ty-2"]
+workers_opensuse = ["opensuse154-ty-1", 'opensuse154-ty-2', 'opensuse154-ty-3', 'opensuse155-ty-1']
 
 workers = workers_ubuntu + workers_centos + workers_fedora + workers_debian + workers_opensuse
 
-workers_bringup = []
+workers_bringup = ['opensuse155-ty-1']
 # workers with wine on them for meta-mingw
-workers_wine = ["ubuntu1804-ty-3"]
+workers_wine = ["ubuntu2204-ty-1", "ubuntu2204-ty-2", "ubuntu2204-ty-3"]
 workers_arm = ["ubuntu1804-arm-1", "ubuntu2004-arm-1", "ubuntu2204-arm-1"]
 workers_buildperf = ["perf-debian11", "perf-alma8"]
 # workers which don't need buildtools for AUH and are able to send email to mailing lists
-workers_auh = ["alma8-ty-1", "alma8-ty-2"]
+workers_auh = ["alma8-ty-1"]
+workers_toaster = workers_fedora + ['ubuntu2304-ty-1', 'opensuse154-ty-1', 'opensuse154-ty-2', 'opensuse154-ty-3']
 
 all_workers = workers + workers_bringup + workers_buildperf + workers_arm
 
@@ -232,6 +233,8 @@ builder_to_workers = {
     "qemuarm64-armhost": workers_arm,
     "auh" : workers_auh,
     "auh-meta-oe" : workers_auh,
+    "metrics": workers_centos + workers_debian + workers_opensuse,
+    "toaster": workers_toaster,
     "default": workers
 }
 
