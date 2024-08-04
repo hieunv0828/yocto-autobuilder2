@@ -65,15 +65,24 @@ def shell(command, worker, builder):
 def canStartBuild(builder, wfb, request):
     log.msg("Checking available disk space...")
 
-    cmd = yield shell("df -BG | grep $(findmnt -T . | awk '{print $2}' | sed -n 2p) | awk '{print $4}' | sed 's/[^0-9]*//g'", wfb.worker, builder)
-    threshold = 100 # GB of space
-    if int(cmd.stdout) < threshold:
-        log.msg("Detected {0} GB of space available, less than threshold of {1} GB. Can't start build".format(cmd.stdout, threshold))
-        wfb.worker.quarantine_timeout = 10 * 60
-        wfb.worker.putInQuarantine()
-        return False
+    # threshold is GB of space
+    checks = {
+        "." : (200, "HOME"),
+        "/tmp" : (10, "/tmp"),
+    }
 
-    log.msg("Detected {0} GB of space available, more than threshold of {1} GB. OK to build".format(cmd.stdout, threshold))
+    for mountpoint in checks:
+        threshold, name = checks[mountpoint]
+
+        cmd = yield shell("df -BG | grep $(findmnt -T %s | awk '{print $2}' | sed -n 2p) | awk '{print $4}' | sed 's/[^0-9]*//g'" % mountpoint, wfb.worker, builder)
+        if int(cmd.stdout) < threshold:
+            log.msg("Detected {0} GB of space available on {1}, less than threshold of {2} GB. Can't start build".format(cmd.stdout, name, threshold))
+            wfb.worker.quarantine_timeout = 10 * 60
+            wfb.worker.putInQuarantine()
+            return False
+        log.msg("Detected {0} GB of space available for {1}, more than threshold of {2} GB".format(cmd.stdout, name, threshold))
+
+    log.msg("OK to build")
     if wfb.worker.isPaused():
         # It was low on space so delay more than one build starting for a while
         wfb.worker.quarantine_timeout = 15 * 60
