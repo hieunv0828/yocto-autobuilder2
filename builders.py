@@ -74,7 +74,9 @@ def canStartBuild(builder, wfb, request):
     for mountpoint in checks:
         threshold, name = checks[mountpoint]
 
-        cmd = yield shell("df -BG | grep $(findmnt -T %s | awk '{print $2}' | sed -n 2p) | awk '{print $4}' | sed 's/[^0-9]*//g'" % mountpoint, wfb.worker, builder)
+        threshold = threshold * 1024 *1024 * 1024
+
+        cmd = yield shell("findmnt -T %s --df -n --bytes | awk '{print $5}'" % mountpoint, wfb.worker, builder)
         if int(cmd.stdout) < threshold:
             log.msg("Detected {0} GB of space available on {1}, less than threshold of {2} GB. Can't start build".format(cmd.stdout, name, threshold))
             wfb.worker.quarantine_timeout = 10 * 60
