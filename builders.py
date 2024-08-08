@@ -68,7 +68,7 @@ def canStartBuild(builder, wfb, request):
     # threshold is GB of space
     checks = {
         "." : (200, "HOME"),
-        "/tmp" : (10, "/tmp"),
+        "/tmp" : (1, "/tmp"),
     }
 
     for mountpoint in checks:
