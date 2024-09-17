@@ -66,6 +66,23 @@ branchdefaults = {
         'branch_meta-openembedded': 'master',
         'branch_oecore': 'master',
     },
+    'styhead': {
+        'branch': 'styhead',
+        'branch_poky': 'styhead',
+        'branch_bitbake': '2.10',
+        'branch_meta-arm': 'styhead',
+        'branch_meta-agl': 'master',
+        'branch_meta-aws': 'styhead',
+        'branch_meta-clang': 'styhead',
+        'branch_meta-gplv2': 'master',
+        'branch_meta-intel': 'styhead',
+        'branch_meta-mingw': 'styhead',
+        'branch_meta-openembedded': 'styhead',
+        'branch_meta-security': 'styhead',
+        'branch_meta-ti': 'styhead',
+        'branch_meta-virtualization': 'styhead',
+        'branch_oecore': 'styhead',
+    },
     'scarthgap': {
         'branch': 'scarthgap',
         'branch_poky': 'scarthgap',
@@ -437,7 +454,7 @@ def parent_scheduler(target):
             name="branchselector",
             default="master",
             label="Release Shortcut Selector",
-            choices=["master", "master-next", "abelloni-next", "mut", "scarthgap", "nanbield", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
+            choices=["master", "master-next", "abelloni-next", "mut", "styhead", "scarthgap", "nanbield", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "zeus", "warrior", "thud", "sumo", "rocko", "pyro", "morty"],
             selectors=branchdefaults),
         util.BooleanParameter(
             name="swat_monitor",
@@ -511,7 +528,15 @@ schedulers.append(sched.Nightly(name='nightly-reproducible-meta-oe', branch='mas
 schedulers.append(sched.Nightly(name='nightly-metrics-dunfell', branch='dunfell', properties=parent_default_props('metrics', 'dunfell'), builderNames=['metrics'], hour=6, minute=0, codebases = {'' : {'branch' : 'dunfell'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-kirkstone', branch='kirkstone', properties=parent_default_props('metrics', 'kirkstone'), builderNames=['metrics'], hour=6, minute=15, codebases = {'' : {'branch' : 'kirkstone'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-scarthgap', branch='scarthgap', properties=parent_default_props('metrics', 'scarthgap'), builderNames=['metrics'], hour=6, minute=30, codebases = {'' : {'branch' : 'scarthgap'}}))
+schedulers.append(sched.Nightly(name='nightly-metrics-styhead', branch='styhead', properties=parent_default_props('metrics', 'styhead'), builderNames=['metrics'], hour=6, minute=45, codebases = {'' : {'branch' : 'styhead'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=7, minute=0))
+
+# Run check-layer-nightly twice a week for styhead
+schedulers.append(sched.Nightly(name='nightly-check-layer-styhead', properties=parent_default_props('check-layer-nightly', 'styhead'),
+                  builderNames=['check-layer-nightly'], dayOfWeek=[1, 4], hour=2, minute=0, codebases = {'' : {'branch' : 'styhead'}}))
+# Run meta-oe-mirror twice a month for styhead
+schedulers.append(sched.Nightly(name='nightly-meta-oe-mirror-styhead', properties=parent_default_props('meta-oe-mirror', 'styhead'),
+                  builderNames=['meta-oe-mirror'], dayOfMonth=[3, 17], hour=2, minute=0, codebases = {'' : {'branch' : 'styhead'}}))
 
 # Run check-layer-nightly twice a week for scarthgap
 schedulers.append(sched.Nightly(name='nightly-check-layer-scarthgap', properties=parent_default_props('check-layer-nightly', 'scarthgap'),
@@ -545,7 +570,7 @@ schedulers.append(sched.Nightly(name='sschduler-indexing', branch='master', prop
 
 # If any of our sphinx docs branches change, trigger a build
 schedulers.append(sched.AnyBranchScheduler(name="yocto-docs-changed",
-            change_filter=util.ChangeFilter(project=["yocto-docs"], branch=[None, "master", "master-next", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "transition"]),
+            change_filter=util.ChangeFilter(project=["yocto-docs"], branch=[None, "master", "master-next", "styhead", "scarthgap", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "transition"]),
             codebases = ['', 'yocto-docs', 'bitbake'],
             treeStableTimer=60,
             builderNames=["docs"]))
@@ -557,7 +582,7 @@ def isbitbakeDocFile(change):
             return True
     return False
 schedulers.append(sched.AnyBranchScheduler(name="bitbake-docs-changed",
-            change_filter=util.ChangeFilter(project=["bitbake"], branch=["master", "1.52", "1.50", "1.48", "1.46"]),
+            change_filter=util.ChangeFilter(project=["bitbake"], branch=["master", "2.10", "2.8", "2.0"]),
             codebases = ['', 'yocto-docs', 'bitbake'],
             fileIsImportant=isbitbakeDocFile,
             onlyImportant=True,
