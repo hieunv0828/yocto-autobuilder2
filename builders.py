@@ -158,12 +158,15 @@ def nextWorker(bldr, workers, buildrequest):
     if '' in buildrequest.sources:
         # Has to be a better way to do this
         branch = buildrequest.sources[''].branch
-    if branch and branch in config.workers_prev_releases and "bringup" not in bldr.name:
-        possible_workers = []
-        for w in workers:
-            if w.worker.workername.startswith(config.workers_prev_releases[branch]):
-                possible_workers.append(w)
-        log.msg("nextWorker: Limiting %s to workers %s for %s" % (str(bldr), str(possible_workers), branch))
+    if branch and "bringup" not in bldr.name:
+        for branchname in config.workers_prev_releases:
+            if branch in branchname:
+                possible_workers = []
+                for w in workers:
+                    if w.worker.workername.startswith(config.workers_prev_releases[branchname]):
+                        possible_workers.append(w)
+                log.msg("nextWorker: Limiting %s to workers %s for %s" % (str(bldr), str(possible_workers), branchname))
+                break
 
     if forced_worker == "*":
         return random.choice(possible_workers) if possible_workers else None
