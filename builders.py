@@ -204,6 +204,7 @@ for builder in config.builder_to_workers:
     builder_bonuses[builder] = timedelta(seconds=bonus)
 # Ensure plain reproducible builds start earlier too
 builder_bonuses["reproducible"] = builder_bonuses["reproducible-debian"]
+#log.msg("Bonuses are %s" % str(builder_bonuses))
 
 # Modified default algothirm from buildbot with a bonus mechanism (thanks tardyp!)
 @defer.inlineCallbacks
@@ -221,11 +222,14 @@ def prioritizeBuilders(master, builders):
     @defer.inlineCallbacks
     def transform(bldr):
         time = yield bldr.getOldestRequestTime()
+        #log.msg("Considering %s" % bldr.name)
         if time is None:
+            #log.msg("Time is None so %s" % str(max_time))
             time = max_time
         else:
             if bldr.name in builder_bonuses:
                 time = time - builder_bonuses[bldr.name]
+                #log.msg("Adding %s so %s" % (str(builder_bonuses[bldr.name]), str(time)))
 
         defer.returnValue((time, bldr))
 
@@ -242,6 +246,7 @@ def prioritizeBuilders(master, builders):
 
     # and reverse the transform
     rv = [xf[1] for xf in transformed]
+    #log.msg("Using %s" % str(rv))
     return rv
 
 def create_parent_builder_factory(buildername, waitname):
