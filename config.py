@@ -22,6 +22,7 @@ buildertorepos = {
     "meta-agl-core": ["poky", "meta-agl"],
     "meta-aws": ["poky", "meta-aws", "meta-openembedded"],
     "meta-clang": ["poky", "meta-clang"],
+    "buildtools-docs": ["poky", "meta-openembedded"],
     "qemuarm-oecore": ["oecore", "bitbake"],
     "checkuri": ["poky"],
     "check-layer": ["poky", "meta-mingw", "meta-gplv2"],
@@ -134,7 +135,7 @@ trigger_builders_wait_perf = ["buildperf-debian11", "buildperf-alma8"]
 builders_others = [
     "reproducible-ubuntu", "reproducible-debian", "reproducible-fedora", "reproducible-centos",
     "meta-oe", "meta-virt", "meta-clang", "meta-exein",
-    "bringup", "bringup-fast",
+    "bringup", "bringup-fast", "buildtools-docs",
     "qemuarm-armhost",
     "check-layer-nightly",
     "metrics", "indexing",
