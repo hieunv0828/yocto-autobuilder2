@@ -315,7 +315,7 @@ def repos_for_builder(buildername):
 
     parameters = []
     repos = config.buildertorepos.get(buildername)
-    if not repos:
+    if repos is None:
         repos = config.buildertorepos["default"]
     for repo in repos:
         inputs = create_repo_inputs(repo)
@@ -497,6 +497,16 @@ schedulers.append(parent_scheduler("a-full"))
 schedulers.append(sched.ForceScheduler(
         name="docs",
         builderNames=["docs"],
+        codebases=[util.CodebaseParameter(codebase='yocto-autobuilder-helper',
+                                          label="yocto-autobuilder-helper:",
+                                          project=None),
+                   util.CodebaseParameter(codebase='yocto-docs',
+                                          label="yocto-docs:",
+                                          project=None),
+                   util.CodebaseParameter(codebase='bitbake',
+                                          label="bitbake:",
+                                          project=None),
+                   ],
         reason=util.StringParameter(
                 name="reason",
                 label="""Reason (please note the reason for triggering the docs build:""",
@@ -571,7 +581,7 @@ schedulers.append(sched.Nightly(name='sschduler-indexing', branch='master', prop
 # If any of our sphinx docs branches change, trigger a build
 schedulers.append(sched.AnyBranchScheduler(name="yocto-docs-changed",
             change_filter=util.ChangeFilter(project=["yocto-docs"], branch=[None, "master", "master-next", "styhead", "scarthgap", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "transition"]),
-            codebases = ['', 'yocto-docs', 'bitbake'],
+            codebases = ['yocto-autobuilder-helper', 'yocto-docs', 'bitbake'],
             treeStableTimer=60,
             builderNames=["docs"]))
 

@@ -382,6 +382,7 @@ def create_doc_builder_factory():
     f.addStep(steps.Git(
         repourl=config.repos["yocto-autobuilder-helper"][0],
         branch=config.repos["yocto-autobuilder-helper"][1],
+        codebase='yocto-autobuilder-helper',
         workdir=util.Interpolate("%(prop:builddir)s/yocto-autobuilder-helper"),
         mode='incremental',
         haltOnFailure=True,
@@ -389,6 +390,7 @@ def create_doc_builder_factory():
     f.addStep(steps.Git(
         repourl=config.repos["yocto-docs"][0],
         branch=config.repos["yocto-docs"][1],
+        codebase='yocto-docs',
         workdir=util.Interpolate("%(prop:builddir)s/yocto-docs"),
         mode='incremental',
         haltOnFailure=True,
@@ -396,6 +398,7 @@ def create_doc_builder_factory():
     f.addStep(steps.Git(
         repourl=config.repos["bitbake"][0],
         branch=config.repos["bitbake"][1],
+        codebase='bitbake',
         workdir=util.Interpolate("%(prop:builddir)s/bitbake"),
         mode='incremental',
         haltOnFailure=True,
