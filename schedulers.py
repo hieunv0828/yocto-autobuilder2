@@ -497,7 +497,7 @@ schedulers.append(parent_scheduler("a-full"))
 schedulers.append(sched.ForceScheduler(
         name="docs",
         builderNames=["docs"],
-        codebases=[util.CodebaseParameter(codebase='yocto-autobuilder-helper',
+        codebases=[util.CodebaseParameter(codebase='yab-helper',
                                           label="yocto-autobuilder-helper:",
                                           project=None),
                    util.CodebaseParameter(codebase='yocto-docs',
@@ -581,7 +581,7 @@ schedulers.append(sched.Nightly(name='sschduler-indexing', branch='master', prop
 # If any of our sphinx docs branches change, trigger a build
 schedulers.append(sched.AnyBranchScheduler(name="yocto-docs-changed",
             change_filter=util.ChangeFilter(project=["yocto-docs"], branch=[None, "master", "master-next", "styhead", "scarthgap", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "transition"]),
-            codebases = ['yocto-autobuilder-helper', 'yocto-docs', 'bitbake'],
+            codebases = ['yab-helper', 'yocto-docs', 'bitbake'],
             treeStableTimer=60,
             builderNames=["docs"]))
 

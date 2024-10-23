@@ -382,7 +382,7 @@ def create_doc_builder_factory():
     f.addStep(steps.Git(
         repourl=config.repos["yocto-autobuilder-helper"][0],
         branch=config.repos["yocto-autobuilder-helper"][1],
-        codebase='yocto-autobuilder-helper',
+        codebase='yab-helper',
         workdir=util.Interpolate("%(prop:builddir)s/yocto-autobuilder-helper"),
         mode='incremental',
         haltOnFailure=True,
