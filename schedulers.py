@@ -79,7 +79,7 @@ branchdefaults = {
         'branch_meta-mingw': 'styhead',
         'branch_meta-openembedded': 'styhead',
         'branch_meta-security': 'styhead',
-        'branch_meta-ti': 'styhead',
+        'branch_meta-ti': 'master',
         'branch_meta-virtualization': 'styhead',
         'branch_oecore': 'styhead',
     },
