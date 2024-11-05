@@ -163,7 +163,7 @@ branchdefaults = {
         'branch_meta-virtualization': 'kirkstone',
         'branch_oecore': 'kirkstone',
         'branch_meta-webosose': 'kirkstone-webos',
-        'branch_meta-qt6': '6.6.0',
+        'branch_meta-qt6': '6.7.2',
     },
     'honister': {
         'branch': 'honister',

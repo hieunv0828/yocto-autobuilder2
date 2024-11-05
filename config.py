@@ -60,7 +60,7 @@ repos = {
                           "master"],
     "bitbake": ["ssh://git@push.openembedded.org/bitbake", "master"],
     "auto-upgrade-helper": ["ssh://git@push.yoctoproject.org/auto-upgrade-helper", "master"],
-    "meta-qt6": ["http://code.qt.io/yocto/meta-qt6.git", "6.6.0"],
+    "meta-qt6": ["http://code.qt.io/yocto/meta-qt6.git", "6.7.2"],
     "meta-qt4": ["ssh://git@push.yoctoproject.org/meta-qt4", "master"],
     "meta-qt3": ["ssh://git@push.yoctoproject.org/meta-qt3", "master"],
     "meta-mingw": ["ssh://git@push.yoctoproject.org/meta-mingw", "master"],
