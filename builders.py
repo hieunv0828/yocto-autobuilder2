@@ -272,7 +272,9 @@ def create_parent_builder_factory(buildername, waitname):
             util.Interpolate("%(prop:builddir)s/yocto-autobuilder-helper/scripts/prepare-shared-repos"),
             util.Interpolate("%(prop:builddir)s/layerinfo.json"),
             util.Interpolate("{}/%(prop:buildername)s-%(prop:buildnumber)s".format(config.sharedrepodir)),
-            "-p", get_publish_dest],
+            "-p", get_publish_dest,
+            "-t", util.Interpolate("%(prop:buildername)s-%(prop:buildnumber)s"),
+        ],
         haltOnFailure=True,
         name="Prepare shared repositories"))
     factory.addStep(steps.SetProperty(
