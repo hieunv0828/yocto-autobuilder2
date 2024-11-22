@@ -41,7 +41,7 @@ class WriteLayerInfo(buildstep.ShellMixin, buildstep.BuildStep):
         cmd = yield self.makeRemoteShellCommand(
             command=writerepos)
         yield self.runCommand(cmd)
-        defer.returnValue(cmd.results())
+        return cmd.results()
 
 
 @defer.inlineCallbacks

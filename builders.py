@@ -232,7 +232,7 @@ def prioritizeBuilders(master, builders):
                 time = time - builder_bonuses[bldr.name]
                 #log.msg("Adding %s so %s" % (str(builder_bonuses[bldr.name]), str(time)))
 
-        defer.returnValue((time, bldr))
+        return (time, bldr)
 
     transformed = yield defer.gatherResults(
         [transform(bldr) for bldr in builders])
