@@ -516,12 +516,9 @@ schedulers.append(sched.ForceScheduler(
         buttonName="Force Build"))
 
 
-# Run a-quick at 1am each day Mon-Sat so we keep master tested and up to date in sstate and buildhistory
-schedulers.append(sched.Nightly(name='nightly-quick', branch='master', properties=parent_default_props('a-quick'),
-                  builderNames=['a-quick'], hour=1, minute=0, dayOfWeek=[0,1,2,3,4,5]))
-# Run a-full at 1am Sun each Week
+# Run a-full at 1am each day so we keep master tested and up to date in sstate and buildhistory
 schedulers.append(sched.Nightly(name='nightly-full', branch='master', properties=parent_default_props('a-full'),
-                  builderNames=['a-full'], hour=1, minute=0, dayOfWeek=6))
+                  builderNames=['a-full'], hour=1, minute=0))
 
 # Run check-layer-nightly each day for master
 schedulers.append(sched.Nightly(name='nightly-check-layer', branch='master', properties=parent_default_props('check-layer-nightly'),
