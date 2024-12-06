@@ -2,7 +2,7 @@ import {resolve} from "path";
 import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
 
-const outDir = 'buildbot_console_view/static';
+const outDir = 'yocto_console_view/static';
 
 export default defineConfig({
   plugins: [

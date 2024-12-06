@@ -41,6 +41,7 @@ import {
   pushIntoMapOfArrays,
   useWindowSize
 } from "buildbot-ui";
+import {YoctoChangeDetails} from './YoctoChangeDetails.tsx';
 
 type ChangeInfo = {
   change: Change;
@@ -53,152 +54,71 @@ export type TagTreeItem = {
   childItems: TagTreeItem[];
 }
 
-export type TagItemConfig = {
-  tag: string,
-  colSpan: number
+export type BuilderGroup = {
+  name: string;
+  tag: string;
+  builders: Builder[];
+  colspan: int;
 };
 
-export type TagLineConfig = TagItemConfig[];
-
-export function buildTagTree(builders: Builder[])
+// Sorts and groups builders together by their tags.
+export function getBuildersGroups(builders: Builder[]) : [Builder[], BuilderGroup[]]
 {
   const buildersByTags = new Map<string, Builder[]>();
   for (const builder of builders) {
-    if (builder.tags === null) {
+    if (builder.name === "indexing") {
       continue;
     }
-    for (const tag of builder.tags) {
-      pushIntoMapOfArrays(buildersByTags, tag, builder);
-    }
-  }
-
-  type TagInfo = {
-    tag: string;
-    builders: Builder[];
-  };
-
-  const undecidedTags: TagInfo[] = [];
-  for (const [tag, tagBuilders] of buildersByTags) {
-    if (tagBuilders.length < builders.length) {
-      undecidedTags.push({tag: tag, builders: tagBuilders});
-    }
-  }
-
-  // sort the tags to first look at tags with the larger number of builders
-  // @FIXME maybe this is not the best method to find the best groups
-  undecidedTags.sort((a, b) => b.builders.length - a.builders.length);
-
-  const tagItems: TagTreeItem[] = [];
-  const builderIdToTag = new Map<number, string>();
-
-  // pick the tags one by one, by making sure we make non-overalaping groups
-  for (const tagInfo of undecidedTags) {
-    let excluded = false;
-    for (const builder of tagInfo.builders) {
-      if (builderIdToTag.has(builder.builderid)) {
-        excluded = true;
-        break;
+    if ((builder.tags !== null) && (builder.tags.length != 0)) {
+      for (const tag of builder.tags) {
+        pushIntoMapOfArrays(buildersByTags, tag, builder);
       }
-    }
-    if (!excluded) {
-      for (const builder of tagInfo.builders) {
-        builderIdToTag.set(builder.builderid, tagInfo.tag);
-      }
-      tagItems.push({tag: tagInfo.tag, builders: tagInfo.builders, childItems: []});
+    } else {
+      pushIntoMapOfArrays(buildersByTags, '', builder);
     }
   }
 
-  // some builders do not have tags, we put them in another group
-  const remainingBuilders = [];
-  for (const builder of builders) {
-    if (!builderIdToTag.has(builder.builderid)) {
-      remainingBuilders.push(builder);
+  const buildersGroups: BuilderGroup[] = [];
+  for (const [tag, builders] of buildersByTags) {
+    builders.sort((a, b) => a.name.localeCompare(b.name));
+    if (tag !== '') {
+      buildersGroups.push({
+        name: builders[0].name,
+        tag: tag,
+        builders: builders,
+        colspan: builders.length
+      });
+    }
+  }
+  if (buildersByTags.has('')) {
+    const builders = buildersByTags.get('');
+    builders.sort((a, b) => a.name.localeCompare(b.name));
+    for (const builder of builders) {
+      buildersGroups.push({
+        name: builder.name,
+        tag: '',
+        builders: [builder],
+        colspan: 1
+      });
     }
   }
 
-  if (remainingBuilders.length) {
-    tagItems.push({tag: "", builders: remainingBuilders, childItems: []});
-  }
+  buildersGroups.sort((a, b) => a.name.localeCompare(b.name));
 
-  // if there is more than one tag in this line, we need to recurse
-  if (tagItems.length > 1) {
-    for (const tagItem of tagItems) {
-      tagItem.childItems = buildTagTree(tagItem.builders);
+  const sortedBuilders: Builder[] = [];
+  for (const buildersGroup of buildersGroups) {
+    for (const builder of buildersGroup.builders) {
+      sortedBuilders.push(builder);
     }
   }
-  return tagItems;
+
+  return [sortedBuilders, buildersGroups];
 }
 
-// Sorts and groups builders together by their tags.
-export function sortBuildersByTags(builders: Builder[]) : [Builder[], TagLineConfig[]]
-{
-  // we call recursive function, which finds non-overlapping groups
-  const tagLineItems = buildTagTree(builders);
-
-  // we get a tree of builders grouped by tags
-  // we now need to flatten the tree, in order to build several lines of tags
-  // (each line is representing a depth in the tag tree)
-  // we walk the tree left to right and build the list of builders in the tree order, and the tag_lines
-  // in the tree, there are groups of remaining builders, which could not be grouped together,
-  // those have the empty tag ''
-  const tagLineConfigAtDepth = new Map<number, TagLineConfig>();
-
-  const resultBuilders: Builder[] = [];
-
-  const setTagLine = (depth: number, tag: string, colSpan: number) => {
-    const lineConfig = tagLineConfigAtDepth.get(depth);
-    if (lineConfig === undefined) {
-      tagLineConfigAtDepth.set(depth, [{tag: tag, colSpan: colSpan}]);
-      return;
-    }
-
-    // Attempt to merge identical tags
-    const lastItem = lineConfig[lineConfig.length - 1];
-    if (lastItem.tag === tag) {
-      lastItem.colSpan += colSpan;
-      return;
-    }
-    lineConfig.push({tag: tag, colSpan: colSpan});
-  };
-
-  const walkItemTree = (tagItem: TagTreeItem, depth: number) => {
-    setTagLine(depth, tagItem.tag, tagItem.builders.length);
-    if (tagItem.childItems.length === 0) {
-      // this is the leaf of the tree, sort by buildername, and add them to the
-      // list of sorted builders
-      tagItem.builders.sort((a, b) => a.name.localeCompare(b.name));
-
-      resultBuilders.push(...tagItem.builders);
-
-      for (let i = 1; i <= 100; i++) {
-        // set the remaining depth of the tree to the same colspan
-        // (we hardcode the maximum depth for now :/ )
-        setTagLine(depth + i, '', tagItem.builders.length);
-      }
-      return;
-    }
-    tagItem.childItems.map(item => walkItemTree(item, depth + 1));
-  };
-
-  for (const tagItem of tagLineItems) {
-    walkItemTree(tagItem, 0);
-  }
-
-  const resultTagLineConfigs: TagLineConfig[] = [];
-
-  for (const tagLineItems of tagLineConfigAtDepth.values()) {
-    if (tagLineItems.length === 1 && tagLineItems[0].tag === "") {
-      continue;
-    }
-    resultTagLineConfigs.push(tagLineItems);
-  }
-  return [resultBuilders, resultTagLineConfigs];
-}
-
-function resolveFakeChange(codebase: string, revision: string, whenTimestamp: number,
+function resolveFakeChange(revision: string, whenTimestamp: number, comment: string,
                            changesByFakeId: Map<string, ChangeInfo>): ChangeInfo
 {
-  const fakeId = `${codebase}-${revision}`;
+  const fakeId = `${revision}-${comment}`;
   const existingChange = changesByFakeId.get(fakeId);
   if (existingChange !== undefined) {
     return existingChange;
@@ -206,11 +126,10 @@ function resolveFakeChange(codebase: string, revision: string, whenTimestamp: nu
 
   const newChange = {
     change: new Change(undefined as unknown as IDataAccessor, "a/1", {
-      changeid: 0,
+      changeid: revision,
       author: "",
       branch: "",
-      codebase: codebase,
-      comments: `Unknown revision ${revision}`,
+      comments: comment,
       files: [],
       parent_changeids: [],
       project: "",
@@ -230,47 +149,63 @@ function resolveFakeChange(codebase: string, revision: string, whenTimestamp: nu
 function selectChangeForBuild(build: Build, buildset: Buildset,
                               changesBySsid: Map<number, ChangeInfo>,
                               changesByRevision: Map<string, ChangeInfo>,
-                              changesByFakeId: Map<string, ChangeInfo>) {
-  if (buildset.sourcestamps !== null) {
-    for (const sourcestamp of buildset.sourcestamps) {
-      const change = changesBySsid.get(sourcestamp.ssid);
-      if (change !== undefined) {
-        return change;
-      }
+                              changesByFakeId: Map<string, ChangeInfo>,
+                              revMapping: Map<int, string>,
+                              branchMapping: Map<int, string>)
+                              {
+  if ((build.properties !== null && ('yp_build_revision' in build.properties))  || (build.buildid in revMapping)) {
+    let revision;
+    let change = undefined;
+    if (build.properties !== null && ('yp_build_revision' in build.properties)) {
+      revision = build.properties['yp_build_revision'][0];
+    } else {
+      revision = revMapping[build.buildid];
     }
-  }
-
-  if (build.properties !== null && ('got_revision' in build.properties)) {
-    const revision = build.properties['got_revision'][0];
     // got_revision can be per codebase or just the revision string
     if (typeof(revision) === "string") {
-      const change = changesByRevision.get(revision);
-      if (change !== undefined) {
-        return change;
+      change = changesByRevision.get(revision);
+      if (change === undefined) {
+        change = changesBySsid.get(revision);
+      }
+      if (change === undefined) {
+        change = resolveFakeChange(revision, build.started_at, revision, changesByFakeId);
       }
 
-      return resolveFakeChange("", revision, build.started_at, changesByFakeId);
-    }
+      change.change.caption = "Commit";
+      if (build.properties !== null && ('yp_build_revision' in build.properties)) {
+        change.change.caption = build.properties['yp_build_branch'][0];
+      }
+      if (build.buildid in branchMapping) {
+        change.change.caption = branchMapping[build.buildid];
+      }
+      change.change.revlink = "http://git.yoctoproject.org/cgit.cgi/poky/commit/?id=" + revision;
+      change.change.errorlink = "http://errors.yoctoproject.org/Errors/Latest/?filter=" + revision + "&type=commit&limit=150";
 
-    const revisionMap = revision as {[codebase: string]: string};
-    for (const codebase in revisionMap) {
-      const codebaseRevision = revisionMap[codebase];
-      const change = changesByRevision.get(codebaseRevision);
-      if (change !== undefined) {
-        return change;
+      let bid = build.buildid;
+      if ((buildset !== null) && (buildset.parent_buildid != null)) {
+        bid = buildset.parent_buildid;
+      }
+      if (build.properties !== null && ('reason' in build.properties)) {
+        change.change.reason = build.properties['reason'][0];
+      }
+      if (build.properties !== null && ('publish_destination' in build.properties)) {
+        change.change.publishurl = build.properties['publish_destination'][0].replace("/srv/autobuilder/autobuilder.yoctoproject.org/", "https://autobuilder.yocto.io/");
+        change.change.publishurl = change.change.publishurl.replace("/srv/autobuilder/autobuilder.yocto.io/", "https://autobuilder.yocto.io/");
       }
     }
 
-    const codebases = Object.keys(revisionMap);
-    if (codebases.length === 0) {
-      return resolveFakeChange("unknown codebase", "", build.started_at, changesByFakeId);
-    }
-    return resolveFakeChange(codebases[0], revisionMap[codebases[0]], build.started_at,
-      changesByFakeId);
+    return change;
   }
 
-  const revision = `unknown revision ${build.builderid}-${build.buildid}`;
-  return resolveFakeChange("unknown codebase", revision, build.started_at, changesByFakeId);
+  const revision = `Unresolved Revision`
+  const change = changesBySsid.get(revision);
+  if (change !== undefined) {
+    return change
+  }
+
+  const fakeChange = resolveFakeChange(revision, build.started_at, revision, changesByFakeId);
+  fakeChange.change.caption = revision;
+  return fakeChange
 }
 
 export const ConsoleView = observer(() => {
@@ -300,7 +235,7 @@ export const ConsoleView = observer(() => {
   const buildsQuery = useDataApiQuery(() => Build.getAll(accessor, {query: {
       limit: buildFetchLimit,
       order: '-started_at',
-      property: ["got_revision"],
+      property: ["yp_build_revision", "yp_build_branch", "reason", "publish_destination"],
     }}));
 
   const windowSize = useWindowSize()
@@ -313,13 +248,65 @@ export const ConsoleView = observer(() => {
     buildrequestsQuery.resolved &&
     buildsQuery.resolved;
 
+  // FIXME: fa-spin
+  if (!queriesResolved) {
+    return (
+      <div className="bb-console-container">
+        <LoadingIndicator/>
+      </div>
+    );
+  }
+
+
   const builderIdsWithBuilds = new Set<number>();
   for (const build of buildsQuery.array) {
     builderIdsWithBuilds.add(build.builderid);
   }
 
+  const revMapping = new Map<int, string>();
+  const branchMapping = new Map<int, string>();
+  for (const build of buildsQuery.array) {
+    let change = false;
+    let {
+      buildid
+    } = build;
+    if (build.properties !== null && ('yp_build_revision' in build.properties)) {
+      revMapping[build.buildid] = build.properties['yp_build_revision'][0];
+      change = true;
+    }
+    if (build.properties !== null && ('yp_build_branch' in build.properties)) {
+      branchMapping[build.buildid] = build.properties.yp_build_branch[0];
+      change = true;
+    }
+    if ((!revMapping[buildid] || !branchMapping[buildid]) && !build.complete_at) {
+      build.getProperties().onChange = properties => {
+        change = false;
+        buildid = properties.endpoint.split('/')[1];
+        if (!revMapping[buildid]) {
+          const rev = getBuildProperty(properties[0], 'yp_build_revision');
+          if (rev != null) {
+            revMapping[buildid] = rev;
+            change = true;
+          }
+        }
+        if (!branchMapping[buildid]) {
+          const branch = getBuildProperty(properties[0], 'yp_build_branch');
+          if (branch != null) {
+            branchMapping[buildid] = branch;
+            change = true;
+          }
+        }
+      };
+    }
+  }
+
+  function getBuildProperty(properties, property) {
+    const hasProperty = properties && properties.hasOwnProperty(property);
+    if (hasProperty) { return properties[property][0]; } else { return null; }
+  }
+
   const buildersWithBuilds = buildersQuery.array.filter(b => builderIdsWithBuilds.has(b.builderid));
-  const [buildersToShow, tagLineConfigs] = sortBuildersByTags(buildersWithBuilds);
+  const [buildersToShow, builderGroups] = getBuildersGroups(buildersWithBuilds);
 
   const changesByRevision = new Map<string, ChangeInfo>();
   const changesBySsid = new Map<number, ChangeInfo>();
@@ -347,7 +334,7 @@ export const ConsoleView = observer(() => {
     }
 
     const change = selectChangeForBuild(build, buildset, changesBySsid, changesByRevision,
-      changesByFakeId);
+      changesByFakeId, revMapping, branchMapping);
 
     pushIntoMapOfArrays(change.buildsByBuilderId, build.builderid, build);
   }
@@ -393,21 +380,11 @@ export const ConsoleView = observer(() => {
     }
   };
 
-  // FIXME: fa-spin
-  if (!queriesResolved) {
-    return (
-      <div className="bb-console-container">
-        <LoadingIndicator/>
-      </div>
-    );
-  }
-
-  if (changesQuery.array.length === 0) {
+  if (buildsQuery.array.length === 0) {
     return (
       <div className="bb-console-container">
         <p>
-          No changes. Console View needs a changesource to be setup,
-          and <Link to="/changes">changes</Link> to be in the system.
+          No builds. Console View needs run builds to be setup.
         </p>
       </div>
     );
@@ -423,22 +400,14 @@ export const ConsoleView = observer(() => {
     )
   });
 
-  const tagLineRows = tagLineConfigs.map((tagLineConfig, i) => {
-    const columns = tagLineConfig.map((item, i) => {
-      return (
-        <td key={i} colSpan={item.colSpan}>
-          <span style={{width: item.colSpan * 50}}>{item.tag}</span>
-        </td>
-      );
-    });
-
+  const tagLineColumns = builderGroups.map((builderGroup, i) => {
     return (
-      <tr className="bb-console-tag-row" key={`tag-${i}`}>
-        <td className="row-header"></td>
-        {columns}
-      </tr>
-    )
+      <td key={i} colSpan={builderGroup.colspan} style={{textAlign: 'center'}}>
+      {builderGroup.tag}
+      </td>
+    );
   });
+
 
   const changeRows = changesToShow.map(changeInfo => {
     const change = changeInfo.change;
@@ -460,7 +429,7 @@ export const ConsoleView = observer(() => {
     return (
       <tr key={`change-${change.changeid}-${change.codebase}-${change.revision ?? ''}`}>
         <td>
-          <ChangeDetails change={change} compact={true}
+          <YoctoChangeDetails change={change} compact={true}
                          showDetails={changeIsExpandedByChangeId.get(change.changeid) ?? false}
                          setShowDetails={(show: boolean) => changeIsExpandedByChangeId.set(change.changeid, show)}/>
         </td>
@@ -474,28 +443,16 @@ export const ConsoleView = observer(() => {
       <Table striped bordered className={(isBigTable() ? 'table-fixedwidth' : '')}>
         <thead>
           <tr className="bb-console-table-first-row first-row">
-            <th className="row-header" style={{width: rowHeaderWidth}}>
-              <OverlayTrigger trigger="click" placement="top" overlay={
-                <Tooltip id="bb-console-view-open-all-changes">
-                  Open information for all changes
-                </Tooltip>
-              } rootClose={true}>
-                <FaPlusCircle onClick={e => openAllChanges()} className="bb-console-changes-expand-icon clickable"/>
-              </OverlayTrigger>
-
-              <OverlayTrigger trigger="click" placement="top" overlay={
-                <Tooltip id="bb-console-view-close-all-changes">
-                  Close information for all changes
-                </Tooltip>
-              } rootClose={true}>
-                <FaMinusCircle onClick={e => closeAllChanges()} className="bb-console-changes-expand-icon clickable"/>
-              </OverlayTrigger>
+            <th className="row-header">
             </th>
             {builderColumns}
           </tr>
         </thead>
         <tbody>
-          {tagLineRows}
+          <tr className="bb-console-tag-row" key="tag">
+            <td className="row-header"></td>
+            {tagLineColumns}
+          </tr>
           {changeRows}
         </tbody>
       </Table>
@@ -506,7 +463,7 @@ export const ConsoleView = observer(() => {
 buildbotSetupPlugin(reg => {
   reg.registerMenuGroup({
     name: 'console',
-    caption: 'Console View',
+    caption: 'Yocto Console View',
     icon: <FaExclamationCircle/>,
     order: 5,
     route: '/console',

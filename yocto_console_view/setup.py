@@ -28,12 +28,12 @@ except ImportError:
     sys.exit(1)
 
 setup_www_plugin(
-    name='buildbot-console-view',
-    description='Buildbot Console View plugin',
-    author='Pierre Tardy',
-    author_email='tardyp@gmail.com',
-    url='http://buildbot.net/',
-    packages=['buildbot_console_view'],
+    name='yocto-console-view',
+    description='Yocto Project Console View plugin.',
+    author=u'Richard Purdie',
+    author_email=u'richard.purdie@linuxfoundation.org',
+    url='http://autobuilder.yoctoproject.org/',
+    packages=['yocto_console_view'],
     package_data={
         '': [
             'VERSION',
@@ -43,7 +43,7 @@ setup_www_plugin(
     },
     entry_points="""
         [buildbot.www]
-        console_view = yocto_console_view:ep
+        yocto_console_view = yocto_console_view:ep
     """,
     classifiers=['License :: OSI Approved :: GNU General Public License v2 (GPLv2)'],
 )
