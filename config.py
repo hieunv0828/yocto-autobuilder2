@@ -167,33 +167,34 @@ publish_dest = "/srv/autobuilder/autobuilder.yocto.io/pub"
 web_port = 8010
 
 # List of workers in the cluster
-workers_ubuntu = ["ubuntu2004-ty-1", 'ubuntu2204-ty-1', 'ubuntu2204-ty-2', 'ubuntu2204-ty-3', 'ubuntu2304-ty-1', 'ubuntu2310-ty-1']
-workers_centos = ["alma9-ty-1", "alma9-ty-2", "alma8-ty-1", "stream8-ty-1", "rocky9-ty-1"]
-workers_fedora = ['fedora38-ty-2', 'fedora38-ty-3', 'fedora38-ty-4', 'fedora38-ty-6', 'fedora39-ty-2', 'fedora40-ty-1']
-workers_debian = ["debian11-ty-1", "debian11-ty-3", "debian12-ty-1", "debian12-ty-2"]
-workers_opensuse = ["opensuse154-ty-1", 'opensuse154-ty-2', 'opensuse154-ty-3', 'opensuse155-ty-1']
+workers_ubuntu = ["ubuntu2004-vk-1", "ubuntu2004-vk-2", "ubuntu2004-vk-3", "ubuntu2204-vk-1", "ubuntu2204-vk-2", "ubuntu2204-vk-3", "ubuntu2204-vk-4", "ubuntu2404-vk-1", "ubuntu2404-vk-2", "ubuntu2404-vk-3", "ubuntu2410-vk-1"]
+workers_centos = ["alma8-vk-1", "alma8-vk-2", "rocky8-vk-1", "alma9-vk-1", "alma9-vk-2", "stream9-vk-1", "rocky9-vk-1", "rocky9-vk-2", "rocky9-vk-3"]
+workers_fedora = ["fedora38-vk-2", "fedora38-vk-3", "fedora39-vk-1", "fedora39-vk-2", "fedora40-vk-1", "fedora40-vk-2", "fedora40-vk-3", "fedora40-vk-4", "fedora41-vk-1"]
+workers_debian = ["debian11-vk-1", "debian11-vk-2", "debian11-vk-3", "debian12-vk-1", "debian12-vk-2", "debian12-vk-3", "debian12-vk-4", "debian12-vk-5", "debian12-vk-6", "debian12-vk-7", "debian12-vk-8", "debian12-vk-9"]
+workers_opensuse = ["opensuse155-vk-1", "opensuse155-vk-2", "opensuse156-vk-1"]
 
 workers = workers_ubuntu + workers_centos + workers_fedora + workers_debian + workers_opensuse
 
-workers_bringup = ['opensuse155-ty-1']
+workers_bringup = ["opensuse156-vk-1", "ubuntu2410-vk-1"]
 # workers with wine on them for meta-mingw
-workers_wine = ["ubuntu2204-ty-1", "ubuntu2204-ty-2", "ubuntu2204-ty-3"]
-workers_arm = ["ubuntu1804-arm-1", "ubuntu2004-arm-1", "ubuntu2204-arm-1"]
-workers_buildperf = ["perf-debian11", "perf-alma8"]
+workers_wine = ["ubuntu2004-vk-1", "ubuntu2004-vk-2", "ubuntu2004-vk-3", "ubuntu2204-vk-1", "ubuntu2204-vk-2", "ubuntu2204-vk-3", "ubuntu2204-vk-4", "ubuntu2404-vk-1", "ubuntu2404-vk-2", "ubuntu2404-vk-3", "ubuntu2410-vk-1"]
+workers_arm = ["ubuntu2004-vk-arm1", "ubuntu2004-vk-arm2", "ubuntu2204-vk-arm1", "ubuntu2204-vk-arm2", "ubuntu2404-vk-arm1", "ubuntu2404-vk-arm2", "ubuntu2410-vk-arm1"]
+workers_buildperf = ["perf-debian12-vk", "perf-alma8-vk"]
 # workers which don't need buildtools for AUH and are able to send email to mailing lists
-workers_auh = ["alma8-ty-1"]
-# toaster doesn't work on fedora 39/40
-workers_toaster = ['fedora38-ty-2', 'fedora38-ty-3', 'fedora38-ty-4', 'fedora38-ty-6', 'ubuntu2304-ty-1', 'opensuse154-ty-1', 'opensuse154-ty-2', 'opensuse154-ty-3']
+workers_auh = ["alma8-vk-2"]
+#workers_toaster = ["ubuntu2204-vk-1", "ubuntu2204-vk-2"]
+workers_toaster = ["ubuntu2204-vk-1", "ubuntu2204-vk-2", "ubuntu2204-vk-3", "ubuntu2204-vk-4", "ubuntu2404-vk-1", "ubuntu2404-vk-2", "ubuntu2404-vk-3", "ubuntu2410-vk-1"]
 
 all_workers = workers + workers_bringup + workers_buildperf + workers_arm
 
 # Worker filtering for older releases
 workers_prev_releases = {
-    "scarthgap" : ("alma8", "alma9", "debian11", "debian12", "fedora38", "opensuse154", "rocky9", "stream8", "ubuntu1804", "ubuntu2004","ubuntu2204", "ubuntu2304", "perf-"),
+    "styhead" : ("alma8", "alma9", "debian11", "debian12", "fedora38", "fedora39", "fedora40", "opensuse154", "opensuse155", "opensise156", "rocky9", "stream8", "ubuntu1804", "ubuntu2004","ubuntu2204", "ubuntu2304", "ubuntu2404", "perf-"),
+    "scarthgap" : ("alma8", "alma9", "debian11", "debian12", "fedora38", "fedora39", "fedora40", "opensuse154", "rocky9", "stream8", "ubuntu1804", "ubuntu2004","ubuntu2204", "ubuntu2304", "perf-"),
     "nanbield" : ("alma8", "alma9", "debian11", "debian12", "fedora37", "fedora38", "opensuse153", "opensuse154", "rocky9", "stream8", "ubuntu1804", "ubuntu2004","ubuntu2204", "ubuntu2304", "perf-"),
     "mickledore" : ("alma8", "alma9", "debian10", "debian11", "fedora35", "fedora36", "fedora37", "fedora38", "opensuse153", "opensuse154", "ubuntu1804", "ubuntu2004","ubuntu2204", "perf-"),
     "langdale" : ("alma8", "alma9", "debian10", "debian11", "fedora35", "fedora36", "opensuse153", "opensuse154", "ubuntu1804", "ubuntu2004","ubuntu2204", "perf-"),
-    "kirkstone" : ("alma8", "alma9", "centos7", "centos8", "debian8", "debian9", "debian10", "debian11", "fedora29", "fedora30", "fedora31", "fedora32", "fedora33", "fedora34", "fedora35", "fedora36", "fedora37", "fedora38", "opensuse150", "opensuse151", "opensuse152", "opensuse153", "ubuntu1604", "ubuntu1804", "ubuntu1904", "ubuntu2004", "ubuntu2110", "ubuntu2204", "perf-"),
+    "kirkstone" : ("alma8", "alma9", "centos7", "centos8", "debian8", "debian9", "debian10", "debian11", "fedora29", "fedora30", "fedora31", "fedora32", "fedora33", "fedora34", "fedora35", "fedora36", "fedora37", "fedora38", "fedora39", "fedora40", "opensuse150", "opensuse151", "opensuse152", "opensuse153", "ubuntu1604", "ubuntu1804", "ubuntu1904", "ubuntu2004", "ubuntu2110", "ubuntu2204", "perf-"),
     "honister" : ("alma8", "centos7", "centos8", "debian8", "debian9", "debian10", "debian11", "fedora29", "fedora30", "fedora31", "fedora32", "fedora33", "fedora34", "fedora35", "opensuse150", "opensuse151", "opensuse152", "opensuse153", "ubuntu1604", "ubuntu1804", "ubuntu1904", "ubuntu2004", "ubuntu2110", "ubuntu2204", "perf-"),
     "hardknott" : ("centos7", "centos8", "debian8", "debian9", "debian10", "debian11", "fedora31", "fedora32", "fedora33", "fedora34", "opensuse152", "ubuntu1604", "ubuntu1804", "ubuntu2004", "perf-"),
     "gatesgarth" : ("centos7", "centos8", "debian8", "debian9", "debian10", "fedora30", "fedora31", "fedora32", "opensuse150", "opensuse151", "opensuse152", "ubuntu1604", "ubuntu1804", "ubuntu1904", "ubuntu2004", "perf-"),
@@ -226,8 +227,8 @@ builder_to_workers = {
     "reproducible-opensuse": workers_opensuse,
     "reproducible-centos": workers_centos,
     "meta-mingw": workers_wine,
-    "buildperf-debian11": ["perf-debian11"],
-    "buildperf-alma8": ["perf-alma8"],
+    "buildperf-debian11": ["perf-debian12-vk"],
+    "buildperf-alma8": ["perf-alma8-vk"],
     "qemuarm-armhost": workers_arm,
     "qemuarm64-ptest": workers_arm,
     "qemuarm64-ptest-fast": workers_arm,
