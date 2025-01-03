@@ -16,3 +16,4 @@
 */
 
 import './views/ConsoleView/ConsoleView';
+import './releaseselectorfield';
