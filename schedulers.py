@@ -498,15 +498,27 @@ schedulers.append(parent_scheduler("a-full"))
 schedulers.append(sched.ForceScheduler(
         name="docs",
         builderNames=["docs"],
+        # Note: we pass FixedParameters here to hide these in the form, since
+        # entries to override the URL and branch are already created thanks to
+        # props_for_builder() below.
         codebases=[util.CodebaseParameter(codebase='yab-helper',
                                           label="yocto-autobuilder-helper:",
-                                          project=None),
+                                          branch=util.FixedParameter(name="branch", default=""),
+                                          revision=util.FixedParameter(name="revision", default=""),
+                                          repository=util.FixedParameter(name="repository", default=""),
+                                          project=util.FixedParameter(name="project", default="")),
                    util.CodebaseParameter(codebase='yocto-docs',
                                           label="yocto-docs:",
-                                          project=None),
+                                          branch=util.FixedParameter(name="branch", default=""),
+                                          revision=util.FixedParameter(name="revision", default=""),
+                                          repository=util.FixedParameter(name="repository", default=""),
+                                          project=util.FixedParameter(name="project", default="")),
                    util.CodebaseParameter(codebase='bitbake',
                                           label="bitbake:",
-                                          project=None),
+                                          branch=util.FixedParameter(name="branch", default=""),
+                                          revision=util.FixedParameter(name="revision", default=""),
+                                          repository=util.FixedParameter(name="repository", default=""),
+                                          project=util.FixedParameter(name="project", default="")),
                    ],
         reason=util.StringParameter(
                 name="reason",

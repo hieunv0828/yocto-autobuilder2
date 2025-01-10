@@ -382,24 +382,24 @@ def create_doc_builder_factory():
         haltOnFailure=True,
         name="Clobber build dir"))
     f.addStep(steps.Git(
-        repourl=config.repos["yocto-autobuilder-helper"][0],
-        branch=config.repos["yocto-autobuilder-helper"][1],
+        repourl=util.Interpolate("%(prop:repo_yocto-autobuilder-helper)s"),
+        branch=util.Property('branch_yocto-autobuilder-helper'),
         codebase='yab-helper',
         workdir=util.Interpolate("%(prop:builddir)s/yocto-autobuilder-helper"),
         mode='incremental',
         haltOnFailure=True,
         name='Fetch yocto-autobuilder-helper'))
     f.addStep(steps.Git(
-        repourl=config.repos["yocto-docs"][0],
-        branch=config.repos["yocto-docs"][1],
+        repourl=util.Interpolate("%(prop:repo_yocto-docs)s"),
+        branch=util.Property('branch_yocto-docs'),
         codebase='yocto-docs',
         workdir=util.Interpolate("%(prop:builddir)s/yocto-docs"),
         mode='incremental',
         haltOnFailure=True,
         name='Fetch yocto-docs'))
     f.addStep(steps.Git(
-        repourl=config.repos["bitbake"][0],
-        branch=config.repos["bitbake"][1],
+        repourl=util.Interpolate("%(prop:repo_bitbake)s"),
+        branch=util.Property('branch_bitbake'),
         codebase='bitbake',
         workdir=util.Interpolate("%(prop:builddir)s/bitbake"),
         mode='incremental',
