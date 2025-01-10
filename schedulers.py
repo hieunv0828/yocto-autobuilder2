@@ -322,6 +322,19 @@ def repos_for_builder(buildername):
         parameters = parameters + [util.NestedParameter(name='', label=repo, fields=inputs, columns=2)]
     return parameters
 
+def repos_dict_for_scheduler(buildername):
+    """
+    Returns a dict of repository properties for a scheduler.
+    """
+    props = {}
+    repos = config.buildertorepos.get(buildername)
+    if repos is None:
+        repos = config.buildertorepos["default"]
+    for repo in repos:
+        props["repo_{}".format(repo)] = config.repos[repo][0]
+        props["branch_{}".format(repo)] = config.repos[repo][1]
+    return props
+
 def parent_default_props(buildername, branchname=None):
     props = {}
     props["swat_monitor"] = True
@@ -593,6 +606,7 @@ schedulers.append(sched.AnyBranchScheduler(name="yocto-docs-changed",
             change_filter=util.ChangeFilter(project=["yocto-docs"], branch=[None, "master", "master-next", "styhead", "scarthgap", "mickledore", "langdale", "kirkstone", "honister", "hardknott", "gatesgarth", "dunfell", "transition"]),
             codebases = ['yab-helper', 'yocto-docs', 'bitbake'],
             treeStableTimer=60,
+            properties=repos_dict_for_scheduler("docs"),
             builderNames=["docs"]))
 
 # If bitbake's sphinx docs change, trigger a build
@@ -603,10 +617,11 @@ def isbitbakeDocFile(change):
     return False
 schedulers.append(sched.AnyBranchScheduler(name="bitbake-docs-changed",
             change_filter=util.ChangeFilter(project=["bitbake"], branch=["master", "2.10", "2.8", "2.0"]),
-            codebases = ['', 'yocto-docs', 'bitbake'],
+            codebases = ['yab-helper', 'yocto-docs', 'bitbake'],
             fileIsImportant=isbitbakeDocFile,
             onlyImportant=True,
             treeStableTimer=60,
+            properties=repos_dict_for_scheduler("docs"),
             builderNames=["docs"]))
 
 # Run meta-webosose for kirkstone once a week on weekends (2am on Friday)
