@@ -403,7 +403,7 @@ for builder in config.subbuilders:
         reason=util.StringParameter(
                 name="reason",
                 label="""Reason (please note the reason for triggering the
- build and any expectations for the build's outcome:""",
+ build and any expectations for the build's outcome):""",
                 required=False),
         properties=props_for_builder(builder),
         buttonName="Force Build"))
@@ -461,7 +461,7 @@ def parent_scheduler(target):
     reason=util.StringParameter(
         name="reason",
         label="""Reason (please note the reason for triggering the build and
- any expectations for the build's outcome:""",
+ any expectations for the build's outcome):""",
         required=False),
     properties=[
         ReleaseSelector(
@@ -535,7 +535,7 @@ schedulers.append(sched.ForceScheduler(
                    ],
         reason=util.StringParameter(
                 name="reason",
-                label="""Reason (please note the reason for triggering the docs build:""",
+                label="""Reason (please note the reason for triggering the docs build):""",
                 required=False),
         properties=props_for_builder("docs"),
         buttonName="Force Build"))
