@@ -1,0 +1,36 @@
+From 9bf9680ab9125138d926c22ca434ad86053bb5c4 Mon Sep 17 00:00:00 2001
+From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Date: Wed, 20 Nov 2024 14:53:34 +0100
+Subject: [PATCH 2/2] builders: Modify free space check to work in docker
+
+Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+---
+ builders.py | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/builders.py b/builders.py
+index ba47241de2cc..02f6c10c6add 100644
+--- a/builders.py
++++ b/builders.py
+@@ -67,8 +67,7 @@ def canStartBuild(builder, wfb, request):
+ 
+     # threshold is GB of space
+     checks = {
+-        "." : (200, "HOME"),
+-        "/tmp" : (1, "/tmp"),
++        "." : (200, "root"),
+     }
+ 
+     for mountpoint in checks:
+@@ -76,7 +75,7 @@ def canStartBuild(builder, wfb, request):
+ 
+         threshold = threshold * 1024 *1024 * 1024
+ 
+-        cmd = yield shell("findmnt -T %s --df -n --bytes | awk '{print $5}'" % mountpoint, wfb.worker, builder)
++        cmd = yield shell("findmnt --all -T %s --df -n --bytes | awk '{print $5}'" % mountpoint, wfb.worker, builder)
+         if int(cmd.stdout) < threshold:
+             log.msg("Detected {0} GB of space available on {1}, less than threshold of {2} GB. Can't start build".format(cmd.stdout, name, threshold))
+             wfb.worker.quarantine_timeout = 10 * 60
+-- 
+2.39.5
+
