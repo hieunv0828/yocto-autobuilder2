@@ -1,4 +1,4 @@
-From ee671836ad9f0b65fa8b8b11c7f366377521ab20 Mon Sep 17 00:00:00 2001
+From 12db34cf42ca695bd34594853013e54464a809f5 Mon Sep 17 00:00:00 2001
 From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
 Date: Fri, 3 Jan 2025 09:39:06 +0100
 Subject: [PATCH 1/2] builders: Do not create tags during builds
@@ -9,14 +9,14 @@ Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
  1 file changed, 1 deletion(-)
 
 diff --git a/builders.py b/builders.py
-index 14ea1df1192e..ba47241de2cc 100644
+index b4c08fa1f29c..4e10bdceedb2 100644
 --- a/builders.py
 +++ b/builders.py
-@@ -273,7 +273,6 @@ def create_parent_builder_factory(buildername, waitname):
+@@ -284,7 +284,6 @@ def create_parent_builder_factory(buildername, waitname):
              util.Interpolate("%(prop:builddir)s/layerinfo.json"),
              util.Interpolate("{}/%(prop:buildername)s-%(prop:buildnumber)s".format(config.sharedrepodir)),
              "-p", get_publish_dest,
--            "-t", util.Interpolate("%(prop:buildername)s-%(prop:buildnumber)s"),
+-            "-t", createBuildTag,
          ],
          haltOnFailure=True,
          name="Prepare shared repositories"))

@@ -19,6 +19,7 @@ from dateutil.tz import tzutc
 import os
 import json
 import random
+import urllib.parse
 
 
 builders = []
@@ -249,6 +250,16 @@ def prioritizeBuilders(master, builders):
     #log.msg("Using %s" % str(rv))
     return rv
 
+@util.renderer
+def createBuildTag(props):
+    buildername = props.getProperty('buildername')
+    buildnumber = props.getProperty('buildnumber')
+    build = props.getBuild()
+    url = urllib.parse.urlparse(build.master.config.buildbotURL)
+    host = url.netloc.replace(':', '_')
+    url.path
+    return f"{host}{url.path}{buildername}-{buildnumber}"
+
 def create_parent_builder_factory(buildername, waitname):
     factory = util.BuildFactory()
     # NOTE: Assumes that yocto-autobuilder repo has been cloned to home
@@ -273,7 +284,7 @@ def create_parent_builder_factory(buildername, waitname):
             util.Interpolate("%(prop:builddir)s/layerinfo.json"),
             util.Interpolate("{}/%(prop:buildername)s-%(prop:buildnumber)s".format(config.sharedrepodir)),
             "-p", get_publish_dest,
-            "-t", util.Interpolate("%(prop:buildername)s-%(prop:buildnumber)s"),
+            "-t", createBuildTag,
         ],
         haltOnFailure=True,
         name="Prepare shared repositories"))
