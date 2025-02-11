@@ -412,14 +412,17 @@ export const ConsoleView = observer(() => {
   const changeRows = changesToShow.map(changeInfo => {
     const change = changeInfo.change;
 
-    const builderColumns = buildersToShow.map(builder => {
-      const builds = changeInfo.buildsByBuilderId.get(builder.builderid) ?? [];
+    const builderColumns = builderGroups.map((builderGroup, i) => {
+      const builds: Build[] = [];
+      for (const builder of builderGroup.builders) {
+        const builderBuilds = changeInfo.buildsByBuilderId.get(builder.builderid) ?? []
+        builds.push(...builderBuilds);
+      }
       const buildLinks = builds.map(build => (
         <BuildLinkWithSummaryTooltip key={build.buildid} build={build}/>
       ));
-
       return (
-        <td key={builder.name} title={builder.name} className="column">
+        <td key={i} title={builderGroup.name} colSpan={builderGroup.colspan} className="column">
           {buildLinks}
         </td>
       );
