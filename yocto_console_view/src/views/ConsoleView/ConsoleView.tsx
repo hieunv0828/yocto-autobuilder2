@@ -191,6 +191,7 @@ function selectChangeForBuild(build: Build, buildset: Buildset,
       if (build.properties !== null && ('publish_destination' in build.properties)) {
         change.change.publishurl = build.properties['publish_destination'][0].replace("/srv/autobuilder/autobuilder.yoctoproject.org/", "https://autobuilder.yocto.io/");
         change.change.publishurl = change.change.publishurl.replace("/srv/autobuilder/autobuilder.yocto.io/", "https://autobuilder.yocto.io/");
+        change.change.publishurl = change.change.publishurl.replace("/srv/autobuilder/valkyrie.yocto.io/", "https://valkyrie.yocto.io/");
       }
     }
 
