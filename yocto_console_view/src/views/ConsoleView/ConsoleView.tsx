@@ -208,6 +208,9 @@ function selectChangeForBuild(build: Build, buildset: Buildset,
   return fakeChange
 }
 
+const revMapping = new Map<int, string>();
+const branchMapping = new Map<int, string>();
+
 export const ConsoleView = observer(() => {
   const accessor = useDataAccessor([]);
 
@@ -263,8 +266,6 @@ export const ConsoleView = observer(() => {
     builderIdsWithBuilds.add(build.builderid);
   }
 
-  const revMapping = new Map<int, string>();
-  const branchMapping = new Map<int, string>();
   for (const build of buildsQuery.array) {
     let change = false;
     let {
@@ -277,26 +278,6 @@ export const ConsoleView = observer(() => {
     if (build.properties !== null && ('yp_build_branch' in build.properties)) {
       branchMapping[build.buildid] = build.properties.yp_build_branch[0];
       change = true;
-    }
-    if ((!revMapping[buildid] || !branchMapping[buildid]) && !build.complete_at) {
-      build.getProperties().onChange = properties => {
-        change = false;
-        buildid = properties.endpoint.split('/')[1];
-        if (!revMapping[buildid]) {
-          const rev = getBuildProperty(properties[0], 'yp_build_revision');
-          if (rev != null) {
-            revMapping[buildid] = rev;
-            change = true;
-          }
-        }
-        if (!branchMapping[buildid]) {
-          const branch = getBuildProperty(properties[0], 'yp_build_branch');
-          if (branch != null) {
-            branchMapping[buildid] = branch;
-            change = true;
-          }
-        }
-      };
     }
   }
 
