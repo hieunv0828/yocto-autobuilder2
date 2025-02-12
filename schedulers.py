@@ -116,6 +116,8 @@ branchdefaults = {
         'branch_meta-ti': 'scarthgap',
         'branch_meta-virtualization': 'scarthgap',
         'branch_oecore': 'scarthgap',
+        'branch_meta-webosose': 'scarthgap-webos',
+        'branch_meta-qt6': '6.8.1',
     },
     'nanbield': {
         'branch': 'nanbield',
@@ -642,6 +644,8 @@ schedulers.append(sched.AnyBranchScheduler(name="bitbake-docs-changed",
             properties=repos_dict_for_scheduler("docs"),
             builderNames=["docs"]))
 
-# Run meta-webosose for kirkstone once a week on weekends (2am on Friday)
+# Run meta-webosose for scarthgap and kirkstone once a week on weekends (2am on Friday)
 schedulers.append(sched.Nightly(name='nightly-meta-webosose', branch='kirkstone', properties=parent_default_props('meta-webosose', 'kirkstone'),
+                  builderNames=['meta-webosose'], hour=2, minute=0, dayOfWeek=4))
+schedulers.append(sched.Nightly(name='nightly-meta-webosose', branch='scarthgap', properties=parent_default_props('meta-webosose', 'scarthgap'),
                   builderNames=['meta-webosose'], hour=2, minute=0, dayOfWeek=4))
