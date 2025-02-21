@@ -144,7 +144,7 @@ buildbotSetupPlugin((reg) => {
 		const prototypeDescriptor = Object.getOwnPropertyDescriptor(element.constructor.prototype, 'value');
 		const objectDescriptor = Object.getOwnPropertyDescriptor(element, 'value');
 		Object.defineProperty(element, 'value', {
-			objectDescriptor,
+			...(objectDescriptor ?? prototypeDescriptor),
 			['set']: function(v) {
 				const realFunc = prototypeDescriptor['set'];
 				realFunc.call(this, v);
