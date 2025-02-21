@@ -47,3 +47,40 @@ tr.bb-console-table-first-row {
     padding: .2em;
   }
 }
+
+/* Modify the Force Build form to compact a bit everything. */
+div.form-group {
+  margin: 0;
+
+  div.col-sm-10 {
+    display: inline-block;
+    width: 80%;
+  };
+
+  label {
+    display: inline-block;
+    width: 20%;
+    font-weight: bold;
+    margin-bottom: 0;
+    top: .5em;
+  }
+
+  .control-label {
+    text-align: right;
+    float: left;
+  }
+
+  div.col-sm-10.col-sm-offset-2 {
+    width: 100%;
+    max-width: 100%;
+    label {
+      width: 80%;
+      float: right;
+      padding-left: 8px;
+    }
+  };
+
+  .row > div.col-sm-6 {
+    margin-bottom: 5px;
+  }
+};
