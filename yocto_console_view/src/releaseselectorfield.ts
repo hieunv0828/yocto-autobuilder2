@@ -1,8 +1,8 @@
 import {buildbotSetupPlugin} from "buildbot-plugin-support";
 buildbotSetupPlugin((reg) => {
+	let selectInputName = null;
 	let selectListName = null;
 	let inputRefs = null;
-	let selectors = null;
 
 	const onTransitionEndEvent = (event) => {
 		/*
@@ -44,59 +44,79 @@ buildbotSetupPlugin((reg) => {
 		const releaseSelector = inputRefs.get('force-field-branchselector');
 		const releaseSelectorLabel = releaseSelector.parentNode.previousSibling;
 		const sepIdx = releaseSelectorLabel.textContent.indexOf(':');
-		releaseSelectorLabel.textContent = releaseSelectorLabel.textContent.substring(0, sepIdx);
+		if (sepIdx >= 0) {
+			releaseSelectorLabel.textContent = releaseSelectorLabel.textContent.substring(0, sepIdx);
+		}
 
 		/*
 		 * Get the name of the ReleaseSelector field div.
 		 */
-		const branchInputId = releaseSelector.attributes.getNamedItem('id').value;
-		const selectName = branchInputId.substring(0, branchInputId.lastIndexOf('-'));
+		selectInputName = releaseSelector.attributes.getNamedItem('id').value;
+		const selectName = selectInputName.substring(0, selectInputName.lastIndexOf('-'));
 		selectListName = selectName + '-listbox';
 	}
 	window.addEventListener('transitionend', onTransitionEndEvent);
 
-	const onClick = (event) => {
+	function updateSelectors() {
 		if (selectListName) {
 			const listDiv = document.getElementById(selectListName);
 			if (listDiv) {
 				/*
-				 * The ReleaseSelector menu is shown: save
-				 * associated selectors for later and clean menu items.
+				 * The ReleaseSelector menu is shown: clean menu items.
 				 */
-				selectors = new Map();
+
 				listDiv.childNodes.forEach(div => {
 					const sepIdx = div.textContent.indexOf(':');
-					const propName = div.textContent.substring(0, sepIdx);
-					const content = div.textContent.substring(sepIdx + 1);
-					div.textContent = propName
-					selectors.set(propName, JSON.parse(content));
+					if (sepIdx >= 0) {
+						div.textContent = div.textContent.substring(0, sepIdx);
+					}
 				});
 			}
 		}
+	}
+
+	function findApplySelector() {
+		/*
+		 * One entry was clicked in the ReleaseSelector
+		 * menu: update all fields described by the
+		 * selector configuration.
+		 */
+		const branchInput = document.getElementById(selectInputName);
+		const inputText = branchInput.parentElement.previousElementSibling.textContent;
+		const sepIdx = inputText.indexOf(':');
+		const selectorName = inputText.substring(0, sepIdx);
+		const selector = inputText.substring(sepIdx + 1);
+
+		new Promise((resolve, reject) => {
+			return applySelector(JSON.parse(selector), selectorName).then(resolve);
+		});
+	}
+
+	const onClick = (event) => {
+		updateSelectors();
 
 		if (event.target.parentElement) {
 			const parentId = event.target.parentElement.attributes.getNamedItem('id');
 			if (parentId && parentId.value == selectListName) {
-				/*
-				 * One entry was clicked in the ReleaseSelector
-				 * menu: update all fields described by the
-				 * selector configuration.
-				 */
-				const selector = selectors.get(event.target.textContent);
-				if (selector) {
-					new Promise((resolve, reject) => {
-						return applySelector(selector, event.target).then(resolve);
-					});
-				}
+				findApplySelector();
 			}
 		}
 	}
 	window.addEventListener('click', onClick);
 
+	const onKeyDown = (event) => {
+		if (event.key == "Enter") {
+			findApplySelector();
+		} else {
+			updateSelectors();
+		}
+	}
+	window.addEventListener('keydown', onKeyDown);
+
 	/*
 	 * Apply values from the selected field selector
 	 */
-	async function applySelector(selector, selectList) {
+	async function applySelector(selector, selectorName) {
 		for (let [field, value] of Object.entries(selector)) {
 			const input = inputRefs.get('force-field-' + field);
 			if (input && input.value != value) {
@@ -110,7 +130,7 @@ buildbotSetupPlugin((reg) => {
 		}
 
 		const releaseSelector = inputRefs.get('force-field-branchselector');
-		releaseSelector.parentNode.previousSibling.textContent = selectList.textContent;
+		releaseSelector.parentNode.previousSibling.textContent = selectorName;
 		releaseSelector.focus();
 	}
 
