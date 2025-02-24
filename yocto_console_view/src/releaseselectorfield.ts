@@ -117,6 +117,13 @@ buildbotSetupPlugin((reg) => {
 	 * Apply values from the selected field selector
 	 */
 	async function applySelector(selector, selectorName) {
+		const modalBody = document.getElementsByClassName("modal-body")[0];
+		let scrolltop = 0, scrollleft = 0;
+		if (modalBody) {
+			scrolltop = modalBody.scrollTop;
+			scrollleft = modalBody.scrollLeft;
+		}
+
 		for (let [field, value] of Object.entries(selector)) {
 			const input = inputRefs.get('force-field-' + field);
 			if (input && input.value != value) {
@@ -132,6 +139,16 @@ buildbotSetupPlugin((reg) => {
 		const releaseSelector = inputRefs.get('force-field-branchselector');
 		releaseSelector.parentNode.previousSibling.textContent = selectorName;
 		releaseSelector.focus();
+
+		/* Scroll back to the initial position. */
+		if (modalBody) {
+			modalBody.scroll(scrollleft, scrolltop)
+
+			setTimeout(() => {
+				modalBody.scroll(scrollleft, scrolltop);
+			}, 1);
+
+		}
 	}
 
 	/*
