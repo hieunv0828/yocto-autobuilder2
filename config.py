@@ -34,6 +34,7 @@ buildertorepos = {
     "auh":  ["poky", "auto-upgrade-helper"],
     "auh-meta-oe":  ["poky", "meta-openembedded", "auto-upgrade-helper"],
     "metrics":  ["poky", "meta-openembedded"],
+    "metrics-gitstats":  ["poky", "oecore", "bitbake", "meta-openembedded", "yocto-docs"],
     "meta-webosose":  ["poky", "meta-clang", "meta-openembedded", "meta-qt6", "meta-webosose", "meta-security"],
     "default": ["poky"]
 }
@@ -138,7 +139,7 @@ builders_others = [
     "bringup", "bringup-fast", "buildtools-docs",
     "qemuarm-armhost",
     "check-layer-nightly",
-    "metrics", "indexing",
+    "metrics", "indexing", "metrics-gitstats",
     "qemuriscv32", "qemuriscv32-tc",
     "qemuriscv64", "qemuriscv64-ptest", "qemuriscv64-tc",
     "qemuppc64", "qemuppc64-tc",
@@ -232,6 +233,8 @@ builder_to_workers = {
     "auh" : workers_auh,
     "auh-meta-oe" : workers_auh,
     "metrics": workers_centos + workers_debian + workers_opensuse,
+     # Have gitstats and gnuplot
+    "metrics-gitstats": ["ubuntu2404-vk-2", "ubuntu2404-vk-3", "ubuntu2410-vk-1"],
     "toaster": workers_toaster,
     "default": workers
 }
