@@ -204,7 +204,7 @@ for builder in config.builder_to_workers:
     bonus = (len(config.workers) - len(config.builder_to_workers[builder])) * 2
     builder_bonuses[builder] = timedelta(seconds=bonus)
 # Ensure plain reproducible builds start earlier too
-builder_bonuses["reproducible"] = builder_bonuses["reproducible-debian"]
+builder_bonuses["reproducible"] = builder_bonuses["oe-selftest-debian"]
 #log.msg("Bonuses are %s" % str(builder_bonuses))
 
 # Modified default algothirm from buildbot with a bonus mechanism (thanks tardyp!)
