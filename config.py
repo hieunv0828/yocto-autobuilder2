@@ -133,7 +133,6 @@ trigger_builders_wait_perf = ["buildperf-debian11", "buildperf-alma8"]
 
 # Builders which are individually triggered
 builders_others = [
-    "reproducible-ubuntu", "reproducible-debian", "reproducible-fedora", "reproducible-centos",
     "meta-oe", "meta-virt", "meta-clang", "meta-exein",
     "bringup", "bringup-fast", "buildtools-docs",
     "qemuarm-armhost",
@@ -221,11 +220,6 @@ builder_to_workers = {
     "oe-selftest-opensuse": workers_opensuse,
     "oe-selftest-centos": workers_centos,
     "oe-selftest-armhost": workers_arm,
-    "reproducible-ubuntu": workers_ubuntu,
-    "reproducible-debian": workers_debian,
-    "reproducible-fedora": workers_fedora,
-    "reproducible-opensuse": workers_opensuse,
-    "reproducible-centos": workers_centos,
     "meta-mingw": workers_wine,
     "buildperf-debian11": ["perf-debian12-vk"],
     "buildperf-alma8": ["perf-alma8-vk"],
