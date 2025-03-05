@@ -74,13 +74,13 @@ repos = {
 }
 
 trigger_builders_wait_shared = [
-    "qemuarm", "qemuarm-alt", "qemuarm-tc",
-    "qemuarm64", "qemuarm64-alt", "qemuarm64-tc",
-    "qemumips", "qemumips-tc",
-    "qemumips64", "qemumips64-tc",
-    "qemuppc", "qemuppc-tc",
-    "qemux86", "qemux86-alt", "qemux86-tc",
-    "qemux86-64", "qemux86-64-alt", "qemux86-64-tc",
+    "qemuarm", "qemuarm-alt",
+    "qemuarm64", "qemuarm64-alt",
+    "qemumips",
+    "qemumips64",
+    "qemuppc",
+    "qemux86", "qemux86-alt",
+    "qemux86-64", "qemux86-64-alt",
     "qemuarm-oecore",
     "qemux86-64-x32", "qemux86-world",
     "multilib",
@@ -109,7 +109,8 @@ trigger_builders_wait_full = trigger_builders_wait_shared + [
     "qemumips-alt", "edgerouter-alt", "qemuppc-alt", "qemux86-world-alt",
     "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-fedora", "oe-selftest-centos",
     "qemux86-64-ptest", "qemux86-64-ltp", "qemuarm64-ptest", "qemuarm64-ltp",
-    "meta-intel", "meta-arm", "meta-aws", "meta-agl-core", "meta-virt", "qemuarmv5"
+    "meta-intel", "meta-arm", "meta-aws", "meta-agl-core", "meta-virt", "qemuarmv5",
+    "qemuarm-tc", "qemuarm64-tc", "qemumips-tc", "qemumips64-tc", "qemuppc-tc", "qemux86-tc", "qemux86-64-tc"
 ]
 
 trigger_builders_wait_quick_releases = {
