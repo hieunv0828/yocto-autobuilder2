@@ -9,6 +9,7 @@ from yoctoabb.steps.writelayerinfo import WriteLayerInfo
 from yoctoabb.steps.runconfig import get_publish_dest, get_publish_resultdir, get_publish_name, RunConfigCheckSteps, TargetPresent
 from buildbot.process.results import Results, SUCCESS, FAILURE, CANCELLED, WARNINGS, SKIPPED, EXCEPTION, RETRY
 from buildbot.process.remotecommand import RemoteCommand
+from buildbot.data import resultspec
 
 from twisted.python import log
 from twisted.internet import defer
@@ -150,6 +151,7 @@ def create_builder_factory():
 
     return f
 
+@defer.inlineCallbacks
 def nextWorker(bldr, workers, buildrequest):
     forced_worker = buildrequest.properties.getProperty("worker", "*")
     possible_workers = list(workers)
@@ -170,7 +172,33 @@ def nextWorker(bldr, workers, buildrequest):
                 break
 
     if forced_worker == "*":
-        return random.choice(possible_workers) if possible_workers else None
+        # Query running builds so we can push builds away from those already running the most
+        builds = yield bldr.master.data.get(
+            ('builds',),
+            [resultspec.Filter('complete', 'eq', [False])],
+        )
+
+        active = {}
+        maxbuilds = 0
+        for build in builds:
+            if build['workerid'] not in active:
+                active[build['workerid']] = 1
+            else:
+                active[build['workerid']] += 1
+                if maxbuilds > active[build['workerid']]:
+                    maxbuilds = active[build['workerid']]
+
+        random.shuffle(possible_workers)
+
+        for worker in possible_workers:
+            if worker.worker.workerid not in active:
+                return worker
+        for i in range(maxbuilds):
+            for worker in possible_workers:
+                if active[worker.worker.workerid] == i:
+                    return worker
+
+        return None
     for w in possible_workers:
         if w.worker.workername == forced_worker:
             return w
