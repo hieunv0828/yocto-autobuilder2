@@ -20,12 +20,18 @@ services:
     ports:
       - 8010:8010
     cpus: 4
-    command: controller
-  worker:
+  worker: &base-worker
     <<: *base-service
     cpus: 8
-    command: worker yocto-worker
     mem_limit: 16gb
+  extraworker:
+    <<: *base-worker
+    cpus: 1
+    mem_limit: 2gb
+    deploy:
+      replicas: 8
+    profiles:
+      - manyworkers
 
 volumes:
   sharedrepo:

@@ -9,6 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
     apt full-upgrade -y && \
     apt -y install \
+        bind9-host \
         build-essential \
         chrpath \
         cpio \
@@ -63,7 +64,6 @@ COPY . /yocto-autobuilder2
 RUN useradd -m --system pokybuild && \
     cd /home/pokybuild && \
     buildbot create-master -r yocto-controller && \
-    buildbot-worker create-worker -r --umask=0o22 yocto-worker controller example-worker pass && \
     \
     cd yocto-controller && \
     mv /yocto-autobuilder2 yoctoabb && \
@@ -85,8 +85,9 @@ RUN useradd -m --system pokybuild && \
 
 # Fix config files for local runner
 RUN sed -i \
-        # Add example-worker \
-        -e "s/^\(workers_debian *=.*\).*/\1 + [\"example-worker\"]/" \
+        # Add local workers \
+        -e "s/^\(workers_debian *=.*\).*/\1 + [f\"local-worker-debian\"]/" \
+        -e "s/^\(workers *=.*\).*/\1 + [f\"local-worker-extra-{i}\" for i in range(1, 9)]/" \
         # Remove workers_bringup from all_workers \
         -e "/^all_workers *=/s/workers_bringup + //" \
         # Switch from ssh:// URLS to git:// so we do not need any auth \
