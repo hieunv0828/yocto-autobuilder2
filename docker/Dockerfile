@@ -58,15 +58,17 @@ ENV LC_ALL en_US.UTF-8
 RUN ssh-keyscan push.yoctoproject.org push.openembedded.org >> /etc/ssh/ssh_known_hosts
 
 # Setup buildbot
-COPY yocto-autobuilder2_patches /yocto-autobuilder2_patches
+COPY docker/yocto-autobuilder2_patches /yocto-autobuilder2_patches
+COPY . /yocto-autobuilder2
 RUN useradd -m --system pokybuild && \
     cd /home/pokybuild && \
     buildbot create-master -r yocto-controller && \
     buildbot-worker create-worker -r --umask=0o22 yocto-worker controller example-worker pass && \
     \
     cd yocto-controller && \
-    git clone https://git.yoctoproject.org/git/yocto-autobuilder2 yoctoabb && \
+    mv /yocto-autobuilder2 yoctoabb && \
     git -C yoctoabb apply /yocto-autobuilder2_patches/*.patch && \
+    rm -rf /yocto-autobuilder2_patches && \
     ln -rs yoctoabb/master.cfg master.cfg && \
     \
     cd /home/pokybuild && \
@@ -108,7 +110,7 @@ RUN sed -i \
     awk '/^schedulers.append\(sched.Nightly\(/{comment=1} /\(/{count+=gsub("\\(", "(")} /\)/{count-=gsub("\\)", ")")} {if (comment) {print "#" $0} else {print} if (count==0) comment=0}' \
         /home/pokybuild/yocto-controller/yoctoabb/schedulers.py
 
-COPY entry.sh /
+COPY docker/entry.sh /
 RUN chmod a+x /entry.sh
 
 ENTRYPOINT ["/entry.sh"]

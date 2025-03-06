@@ -2,29 +2,27 @@
 
 ---
 
+x-base-service: &base-service
+  build:
+    context: ..
+    dockerfile: docker/Dockerfile
+  volumes:
+    - sharedrepo:/sharedrepo
+    - publish:/publish
+    - mirror:/home/pokybuild/git/mirror
+    - srvautobuilder:/srv/autobuilder
+  stdin_open: true
+  tty: true
+
 services:
   controller:
-    build: .
-    volumes:
-      - sharedrepo:/sharedrepo
-      - publish:/publish
-      - mirror:/home/pokybuild/git/mirror
-      - srvautobuilder:/srv/autobuilder
+    <<: *base-service
     ports:
       - 8010:8010
-    stdin_open: true
-    tty: true
     cpus: 4
     command: controller
   worker:
-    build: .
-    volumes:
-      - sharedrepo:/sharedrepo
-      - publish:/publish
-      - mirror:/home/pokybuild/git/mirror
-      - srvautobuilder:/srv/autobuilder
-    stdin_open: true
-    tty: true
+    <<: *base-service
     cpus: 8
     command: worker yocto-worker
     mem_limit: 16gb
