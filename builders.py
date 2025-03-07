@@ -178,25 +178,16 @@ def nextWorker(bldr, workers, buildrequest):
             [resultspec.Filter('complete', 'eq', [False])],
         )
 
-        active = {}
-        maxbuilds = 0
+        active = {worker.worker.workerid: 0 for worker in possible_workers}
         for build in builds:
-            if build['workerid'] not in active:
-                active[build['workerid']] = 1
-            else:
+            if build['workerid'] in active:
                 active[build['workerid']] += 1
-                if maxbuilds > active[build['workerid']]:
-                    maxbuilds = active[build['workerid']]
+        least_actives = [k for k, v in active.items() if v == min(active.values())]
 
-        random.shuffle(possible_workers)
-
-        for worker in possible_workers:
-            if worker.worker.workerid not in active:
-                return worker
-        for i in range(maxbuilds):
-            for worker in possible_workers:
-                if active[worker.worker.workerid] == i:
-                    return worker
+        possible_workers = [worker for worker in possible_workers
+                            if worker.worker.workerid in least_actives]
+        if possible_workers:
+            return random.choice(possible_workers)
 
         return None
     for w in possible_workers:
