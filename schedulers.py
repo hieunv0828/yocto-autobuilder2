@@ -563,6 +563,7 @@ schedulers.append(sched.Nightly(name='nightly-metrics-kirkstone', branch='kirkst
 schedulers.append(sched.Nightly(name='nightly-metrics-scarthgap', branch='scarthgap', properties=parent_default_props('metrics', 'scarthgap'), builderNames=['metrics'], hour=6, minute=30, codebases = {'' : {'branch' : 'scarthgap'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics-styhead', branch='styhead', properties=parent_default_props('metrics', 'styhead'), builderNames=['metrics'], hour=6, minute=45, codebases = {'' : {'branch' : 'styhead'}}))
 schedulers.append(sched.Nightly(name='nightly-metrics', branch='master', properties=parent_default_props('metrics'), builderNames=['metrics'], hour=7, minute=0))
+schedulers.append(sched.Nightly(name='nightly-metrics-gitstats', branch='master', properties=parent_default_props('metrics-gitstats'), builderNames=['metrics-gitstats'], hour=4, minute=0))
 
 # Run check-layer-nightly twice a week for styhead
 schedulers.append(sched.Nightly(name='nightly-check-layer-styhead', properties=parent_default_props('check-layer-nightly', 'styhead'),
