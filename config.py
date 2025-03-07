@@ -311,4 +311,7 @@ builder_tags = {
     "oe-selftest-fedora": ["selftest"],
     "oe-selftest-centos": ["selftest"],
     "oe-selftest": ["selftest"],
+
+    "metrics": ["metrics"],
+    "metrics-gitstats": ["metrics"],
 }
