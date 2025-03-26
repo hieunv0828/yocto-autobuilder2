@@ -104,7 +104,7 @@ trigger_builders_wait_quick = trigger_builders_wait_shared + [
 
 trigger_builders_wait_full = trigger_builders_wait_shared + [
     "qemux86-world-alt",
-    "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-fedora", "oe-selftest-centos",
+    "oe-selftest-debian", "oe-selftest-fedora",
     "qemux86-64-ptest", "qemux86-64-ltp", "qemuarm64-ptest", "qemuarm64-ltp",
     "meta-intel", "meta-arm", "meta-aws", "meta-agl-core", "meta-virt", "qemuarmv5",
     "qemuarm-tc", "qemuarm64-tc", "qemux86-tc", "qemux86-64-tc"
@@ -131,7 +131,7 @@ trigger_builders_wait_full_releases = {
     "zeus" : trigger_builders_wait_full + ["mpc8315e-rdb", "mpc8315e-rdb-alt", "edgerouter", "edgerouter-alt", "non-gpl3"] + old_arch_full,
     "thud" : trigger_builders_wait_full + ["mpc8315e-rdb", "mpc8315e-rdb-alt", "edgerouter", "edgerouter-alt", "non-gpl3"] + old_arch_full,
     "sumo" : trigger_builders_wait_shared + ["qemumips-alt", "edgerouter-alt", "mpc8315e-rdb-alt", "qemuppc-alt", "qemux86-world-alt",
-                                             "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-centos"]
+                                             "oe-selftest-fedora", "oe-selftest-debian"]
 }
 
 trigger_builders_wait_perf = ["buildperf-debian11", "buildperf-alma8"]
@@ -159,6 +159,7 @@ builders_others = [
     "meta-oe-mirror",
     "auh", "auh-meta-oe",
     "edgerouter", "edgerouter-alt",
+    "oe-selftest-ubuntu", "oe-selftest-centos", "oe-selftest-opensuse",
     "non-gpl3",
     "meta-webosose"
 ] + old_arch_full
@@ -224,9 +225,9 @@ notify_on_missing = None
 builder_to_workers = {
     "bringup": workers_bringup + workers,
     "bringup-fast": workers_bringup + workers,
+    "oe-selftest-debian": workers_debian + workers_ubuntu,
+    "oe-selftest-fedora": workers_fedora + workers_centos + workers_opensuse,
     "oe-selftest-ubuntu": workers_ubuntu,
-    "oe-selftest-debian": workers_debian,
-    "oe-selftest-fedora": workers_fedora,
     "oe-selftest-opensuse": workers_opensuse,
     "oe-selftest-centos": workers_centos,
     "oe-selftest-armhost": workers_arm,
