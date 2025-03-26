@@ -77,9 +77,6 @@ repos = {
 trigger_builders_wait_shared = [
     "qemuarm", "qemuarm-alt",
     "qemuarm64", "qemuarm64-alt",
-    "qemumips",
-    "qemumips64",
-    "qemuppc",
     "qemux86", "qemux86-alt",
     "qemux86-64", "qemux86-64-alt",
     "qemuarm-oecore",
@@ -106,29 +103,33 @@ trigger_builders_wait_quick = trigger_builders_wait_shared + [
 ]
 
 trigger_builders_wait_full = trigger_builders_wait_shared + [
-    "qemumips-alt", "qemuppc-alt", "qemux86-world-alt",
+    "qemux86-world-alt",
     "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-fedora", "oe-selftest-centos",
     "qemux86-64-ptest", "qemux86-64-ltp", "qemuarm64-ptest", "qemuarm64-ltp",
     "meta-intel", "meta-arm", "meta-aws", "meta-agl-core", "meta-virt", "qemuarmv5",
-    "qemuarm-tc", "qemuarm64-tc", "qemumips-tc", "qemumips64-tc", "qemuppc-tc", "qemux86-tc", "qemux86-64-tc"
+    "qemuarm-tc", "qemuarm64-tc", "qemux86-tc", "qemux86-64-tc"
 ]
 
 trigger_builders_wait_quick_releases = {
     "master" : trigger_builders_wait_quick,
-    "scarthgap" : trigger_builders_wait_quick,
-    "kirkstone" : trigger_builders_wait_quick + ["edgerouter", "non-gpl"],
+    "styhead" : trigger_builders_wait_quick + ["qemumips", "qemumips64", "qemuppc"],
+    "scarthgap" : trigger_builders_wait_quick + ["qemumips", "qemumips64", "qemuppc"],
+    "kirkstone" : trigger_builders_wait_quick + ["edgerouter", "non-gpl", "qemumips", "qemumips64", "qemuppc"],
     "zeus" : trigger_builders_wait_quick + ["mpc8315e-rdb", "edgerouter", "non-gpl3"],
     "thud" : trigger_builders_wait_quick + ["mpc8315e-rdb", "edgerouter", "non-gpl3"],
     "sumo" : trigger_builders_wait_quick + ["mpc8315e-rdb", "edgerouter", "non-gpl3"]
 }
 
+old_arch_full = ["qemumips", "qemumips-alt", "qemumips64", "qemuppc", "qemuppc-alt", "qemumips-tc", "qemumips64-tc", "qemuppc-tc"]
+
 trigger_builders_wait_full_releases = {
     "master" : trigger_builders_wait_full + ["meta-clang"],
     "walnascar" : trigger_builders_wait_full + ["meta-clang"],
-    "scarthgap" : trigger_builders_wait_full,
-    "kirkstone" : trigger_builders_wait_full + ["edgerouter", "edgerouter-alt", "non-gpl3"],
-    "zeus" : trigger_builders_wait_full + ["mpc8315e-rdb", "mpc8315e-rdb-alt", "edgerouter", "edgerouter-alt", "non-gpl3"],
-    "thud" : trigger_builders_wait_full + ["mpc8315e-rdb", "mpc8315e-rdb-alt", "edgerouter", "edgerouter-alt", "non-gpl3"],
+    "styhead" : trigger_builders_wait_full + old_arch_full,
+    "scarthgap" : trigger_builders_wait_full + old_arch_full,
+    "kirkstone" : trigger_builders_wait_full + ["edgerouter", "edgerouter-alt", "non-gpl3"] + old_arch_full,
+    "zeus" : trigger_builders_wait_full + ["mpc8315e-rdb", "mpc8315e-rdb-alt", "edgerouter", "edgerouter-alt", "non-gpl3"] + old_arch_full,
+    "thud" : trigger_builders_wait_full + ["mpc8315e-rdb", "mpc8315e-rdb-alt", "edgerouter", "edgerouter-alt", "non-gpl3"] + old_arch_full,
     "sumo" : trigger_builders_wait_shared + ["qemumips-alt", "edgerouter-alt", "mpc8315e-rdb-alt", "qemuppc-alt", "qemux86-world-alt",
                                              "oe-selftest-ubuntu", "oe-selftest-debian", "oe-selftest-centos"]
 }
@@ -160,7 +161,7 @@ builders_others = [
     "edgerouter", "edgerouter-alt",
     "non-gpl3",
     "meta-webosose"
-]
+] + old_arch_full
 
 subbuilders = list(set(trigger_builders_wait_quick + trigger_builders_wait_full + trigger_builders_wait_perf + builders_others))
 builders = ["a-quick", "a-full", "docs"] + subbuilders
