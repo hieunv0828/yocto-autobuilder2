@@ -145,6 +145,7 @@ builders_others = [
     "qemuppc64", "qemuppc64-tc",
     "qemux86-ptest", "qemux86-ptest-fast",
     "qemux86-musl-ptest", "qemux86-64-musl-ptest", "qemuarm64-musl-ptest",
+    "musl-qemuarm64",
     "buildperf-debian11",
     "buildperf-alma8",
     "reproducible-meta-oe",
@@ -295,6 +296,7 @@ builder_tags = {
 
     "musl-qemux86": ["musl"],
     "musl-qemux86-64": ["musl"],
+    "musl-qemuarm64": ["musl"],
 
     "qemuarm64-ptest": ["ptest"],
     "qemuarm64-ptest-fast": ["ptest"],
